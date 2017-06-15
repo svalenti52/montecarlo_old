@@ -19,26 +19,25 @@ protected:
     double cumulative_value;
     int pre_size;
     std::vector<double> vector_of_values;
-    std::function<bool(double)> local_condition_met;
-    std::function<bool(std::vector<double>)> collective_condition_met;
+    std::function<bool(std::vector<double>&)> condition_met;
+    //std::function<bool(std::vector<double>)> collective_condition_met;
 public:
     MonteCarloSim() : nr_trials(1'000'000), cumulative_value(0.0) {
-        local_condition_met = [](double d) ->bool { return d > 0.5; };
+        condition_met =  nullptr;
     }
-    MonteCarloSim(int i_nr_trials, std::function<bool(double)> i_function)
+    MonteCarloSim( int i_nr_trials, std::function<bool(std::vector<double>&)> i_function)
             : nr_trials(i_nr_trials), cumulative_value(0.0) {
-        local_condition_met = i_function;
+        condition_met = i_function;
     }
 
-    void load_condition_met(std::function<bool(double)> f) {
-        local_condition_met = f;
+    void load_condition_met(std::function<bool(std::vector<double>&)> f) {
+        condition_met = f;
     }
 
     virtual void run() {
         for ( int ix = 0; ix < nr_trials; ++nr_trials ) {
-            for ( double d : vector_of_values )
-                if ( local_condition_met(d) )
-                    cumulative_value += 1.0;
+            if ( condition_met(vector_of_values) )
+                cumulative_value += 1.0;
         }
     }
 
