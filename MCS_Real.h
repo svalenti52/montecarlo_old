@@ -17,21 +17,20 @@ protected:
     std::default_random_engine dre{};
     std::uniform_real_distribution<double> urd;
 public:
-    MCS_Real(int i_nr_trials, double lb, double ub, int i_pre_size, std::function<bool(std::vector<double>&)> f)
+    MCS_Real(int i_nr_trials, double lb, double ub, int i_nr_random_reals, std::function<bool(std::vector<double>&)> f)
             : MonteCarloSim(i_nr_trials, f ) {
         std::uniform_real_distribution<double> urd_tmp(lb, ub);
         urd = std::move(urd_tmp);
-        nr_random_elements = i_pre_size;
+        nr_random_real_values = i_nr_random_reals;
     }
 
     void run() override {
         for ( int ix = 0; ix < nr_trials; ++ix ) {
-            collective_count = 0;
-            for ( int jx = 0; jx < nr_random_elements; ++jx )
-                vector_of_random_values.push_back(urd(dre));
-            if ( condition_met(vector_of_random_values) )
+            for ( int jx = 0; jx < nr_random_real_values; ++jx )
+                vector_of_random_real_values.push_back(urd(dre));
+            if ( real_condition_met(vector_of_random_real_values) )
                 cumulative_value += 1.0;
-            vector_of_random_values.clear();
+            vector_of_random_real_values.clear();
         }
     }
 };

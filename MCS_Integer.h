@@ -21,7 +21,7 @@ public:
             : MonteCarloSim(i_nr_trials, f) {
         std::uniform_int_distribution<int> uid_tmp(i_min, i_max);
         uid = std::move(uid_tmp);
-        nr_random_elements = i_pre_size;
+        nr_random_real_values = i_pre_size;
     }
 };
 
