@@ -20,7 +20,6 @@ protected:
     int pre_size;
     std::vector<double> vector_of_values;
     std::function<bool(std::vector<double>&)> condition_met;
-    //std::function<bool(std::vector<double>)> collective_condition_met;
 public:
     MonteCarloSim() : nr_trials(1'000'000), cumulative_value(0.0) {
         condition_met =  nullptr;

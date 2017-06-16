@@ -1,6 +1,8 @@
-//
-// Created by svalenti on 6/15/2017.
-//
+/**
+ * \file MCS_Real.h
+ * \date 15-Jun-2017.
+ * \brief Class for Uniform Real Distribution.
+ */
 
 #ifndef MONTECARLO_MCS_REAL_H
 #define MONTECARLO_MCS_REAL_H
@@ -8,7 +10,6 @@
 #include <functional>
 #include <iostream>
 #include <random>
-#include <algorithm>
 #include "MonteCarloSim.h"
 
 class MCS_Real : public MonteCarloSim {
