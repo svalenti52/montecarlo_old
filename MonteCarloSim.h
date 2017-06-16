@@ -15,10 +15,10 @@
 class MonteCarloSim {
 protected:
     int nr_trials;
-    int collective_count;
+    //int collective_count;
     double cumulative_value;
-    int pre_size;
-    std::vector<double> vector_of_values;
+    int nr_random_elements;
+    std::vector<double> vector_of_random_values;
     std::function<bool(std::vector<double>&)> condition_met;
 public:
     MonteCarloSim() : nr_trials(1'000'000), cumulative_value(0.0) {
@@ -35,7 +35,7 @@ public:
 
     virtual void run() {
         for ( int ix = 0; ix < nr_trials; ++nr_trials ) {
-            if ( condition_met(vector_of_values) )
+            if ( condition_met(vector_of_random_values) )
                 cumulative_value += 1.0;
         }
     }

@@ -21,17 +21,17 @@ public:
             : MonteCarloSim(i_nr_trials, f ) {
         std::uniform_real_distribution<double> urd_tmp(lb, ub);
         urd = std::move(urd_tmp);
-        pre_size = i_pre_size;
+        nr_random_elements = i_pre_size;
     }
 
     void run() override {
         for ( int ix = 0; ix < nr_trials; ++ix ) {
             collective_count = 0;
-            for ( int jx = 0; jx < pre_size; ++jx )
-                vector_of_values.push_back(urd(dre));
-            if ( condition_met(vector_of_values) )
+            for ( int jx = 0; jx < nr_random_elements; ++jx )
+                vector_of_random_values.push_back(urd(dre));
+            if ( condition_met(vector_of_random_values) )
                 cumulative_value += 1.0;
-            vector_of_values.clear();
+            vector_of_random_values.clear();
         }
     }
 };
