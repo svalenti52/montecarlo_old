@@ -27,10 +27,10 @@ public:
     void run() override {
         for ( int ix = 0; ix < nr_trials; ++ix ) {
             for ( int jx = 0; jx < nr_random_real_values; ++jx )
-                vector_of_random_real_values.push_back(urd(dre));
-            if ( real_condition_met(vector_of_random_real_values) )
+                random_real_vector.push_back(urd(dre));
+            if ( real_condition_met(random_real_vector) )
                 cumulative_value += 1.0;
-            vector_of_random_real_values.clear();
+            random_real_vector.clear();
         }
     }
 };

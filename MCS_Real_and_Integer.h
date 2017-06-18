@@ -9,6 +9,8 @@
 
 #include <val/montecarlo/MonteCarloSim.h>
 #include <random>
+#include <functional>
+#include <vector>
 
 class MCS_Real_and_Integer : public MonteCarloSim {
 
@@ -17,6 +19,7 @@ public:
     std::uniform_real_distribution<double> urd;
     std::uniform_int_distribution<int> uid;
 
+    std::vector<int> integer_state_vector;
 public:
     MCS_Real_and_Integer(int i_nr_trials, double lb, double ub,
             int i_min, int i_max, int nr_random_reals,
@@ -36,10 +39,10 @@ public:
     void run() override {
         for ( int ix = 0; ix < nr_trials; ++ix ) {
             for ( int jx = 0; jx < nr_random_real_values; ++jx )
-                vector_of_random_real_values.push_back(urd(dre));
-            if ( real_condition_met(vector_of_random_real_values) )
+                random_real_vector.push_back(urd(dre));
+            if ( real_condition_met(random_real_vector) )
                 cumulative_value += 1.0;
-            vector_of_random_real_values.clear();
+            random_real_vector.clear();
         }
     }
 };
