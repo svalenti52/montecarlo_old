@@ -1,3 +1,12 @@
+/**
+ * \file Deque_of_Difference.h
+ * \date 19-Jun-2017
+ * \brief For a given vector, forms a deque of the differences between
+ * subsequent values of the vector.
+ *
+ * \details
+ */
+
 //
 // Created by svalenti on 6/19/2017.
 //
@@ -11,8 +20,10 @@
 
 template <typename T>
 class Deque_of_Difference {
+
     std::deque<T> difference;
     T max_value; // used to determine ends, will be less than the ends
+                // but greater than all interior values
 public:
     Deque_of_Difference(std::vector<T> elements,
             T begin_value, T end_value, T i_max_value) : max_value(i_max_value) {
