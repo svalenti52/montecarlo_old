@@ -11,6 +11,7 @@
 #include <random>
 #include <functional>
 #include <vector>
+#include <val/montecarlo/Deque_of_Difference.h>
 
 class MCS_Real_and_Integer : public MonteCarloSim {
 
