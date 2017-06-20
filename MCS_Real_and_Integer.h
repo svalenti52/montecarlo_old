@@ -12,38 +12,29 @@
 #include <functional>
 #include <vector>
 #include <val/montecarlo/Deque_of_Difference.h>
+#include <val/montecarlo/Random_Event.h>
 
 class MCS_Real_and_Integer : public MonteCarloSim {
 
 public:
-    std::default_random_engine dre{};
-    std::uniform_real_distribution<double> urd;
-    std::uniform_int_distribution<int> uid;
 
-    std::vector<int> integer_state_vector;
-public:
+    Random_Event<double> random_real_event;
+
+    Random_Event<int> random_discrete_event;
+
     MCS_Real_and_Integer(int i_nr_trials, double lb, double ub,
             int i_min, int i_max, int nr_random_reals,
             std::function<bool(std::vector<double>&)> f_real,
             std::function<bool(std::vector<int>&)> f_integer )
-        : MonteCarloSim(i_nr_trials, f_real, f_integer) {
-
-        nr_random_real_values = nr_random_reals;
-
-        std::uniform_real_distribution<double> urd_tmp(lb, ub);
-        urd = std::move(urd_tmp);
-
-        std::uniform_int_distribution<int> uid_tmp(i_min, i_max);
-        uid = std::move(uid_tmp);
-    }
+        : MonteCarloSim(i_nr_trials, f_real, f_integer),
+          random_real_event(lb, ub, nr_random_reals),
+          random_discrete_event(i_min, i_max, 1) {}
 
     void run() override {
         for ( int ix = 0; ix < nr_trials; ++ix ) {
-            for ( int jx = 0; jx < nr_random_real_values; ++jx )
-                random_real_vector.push_back(urd(dre));
-            if ( real_condition_met(random_real_vector) )
+            if ( real_condition_met(random_real_event.events) )
                 cumulative_value += 1.0;
-            random_real_vector.clear();
+            random_real_event.reload_random_values();
         }
     }
 };

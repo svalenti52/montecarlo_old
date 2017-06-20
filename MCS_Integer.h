@@ -11,8 +11,8 @@
 #include <iostream>
 #include <random>
 #include <vector>
-#include "MonteCarloSim.h"
-#include "Random_Event.h"
+#include <val/montecarlo/MonteCarloSim.h>
+#include <val/montecarlo/Random_Event.h>
 
 class MCS_Integer : public MonteCarloSim {
 public:
@@ -23,7 +23,6 @@ public:
             Func_Two_Int_Vectors f)
             : MonteCarloSim(i_nr_trials, f), interim_count(1.0),
               random_event(i_min, i_max, i_nr_random_integer_values) {
-        //nr_random_integer_values = i_nr_random_integer_values;
     }
 
     void run() override {
