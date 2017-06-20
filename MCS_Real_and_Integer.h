@@ -29,6 +29,7 @@ public:
         : MonteCarloSim(i_nr_trials, f_real, f_integer),
           random_real_event(lb, ub, nr_random_reals),
           random_discrete_event(i_min, i_max, 1) {}
+    // TBD - the explicit '1' passed as a parameter needs to be made variable
 
     void run() override {
         for ( int ix = 0; ix < nr_trials; ++ix ) {

@@ -13,7 +13,9 @@
 
 #include <vector>
 #include <random>
+#include <boost/utility/enable_if.hpp>
 
+/*
 template <typename T>
 class Integral_Distribution {
 public:
@@ -36,11 +38,17 @@ public:
 
     }
 };
+*/
+
+//using namespace std;
 
 template <typename T>
 class Random_Event {
     using UID = std::uniform_int_distribution<T>;
     using URD = std::uniform_real_distribution<T>;
+
+    using UID_explicit = std::uniform_int_distribution<int>;
+    using URD_explicit = std::uniform_real_distribution<double>;
 
     int nr_events;
     T lb;
@@ -69,11 +77,12 @@ class Random_Event {
         events[ix] = urd(dre);
     }
 
-public:
     std::default_random_engine dre;
-    std::uniform_int_distribution<int> uid;
-    std::uniform_real_distribution<double> urd;
+    UID_explicit uid;
+    URD_explicit urd;
+    //typename boost::enable_if<std::is_integral<T>::value, UID> uid;
 
+public:
     std::vector<T> events;
 
 //----------------------------------------------------------------
