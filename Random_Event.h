@@ -13,33 +13,31 @@
 
 #include <vector>
 #include <random>
-#include <boost/utility/enable_if.hpp>
 
-/*
-template <typename T>
-class Integral_Distribution {
+template <class T, class Enable = void>
+class Distribution {};
+
+template <class T>
+class Distribution <T, typename std::enable_if<std::is_integral<T>::value>::type> {
 public:
     std::default_random_engine dre;
     std::uniform_int_distribution<T> uid;
 public:
-    Integral_Distribution(T i_min, T i_max)
+    Distribution(T i_min, T i_max)
     : uid(i_min, i_max) {}
 };
 
-template <typename T>
-class Real_Distribution {
+template <class T>
+class Distribution <T, typename std::enable_if<std::is_floating_point<T>::value>::type> {
 public:
     std::default_random_engine dre;
     std::uniform_real_distribution<T> urd;
 public:
-    Real_Distribution(T i_lb, T i_ub)
-            : urd(i_lb, i_ub)
-    {
-
-    }
+    Distribution(T i_lb, T i_ub)
+            : urd(i_lb, i_ub) {}
 };
-*/
 
+//------------------------------------------------------
 //using namespace std;
 
 template <typename T>
@@ -80,7 +78,6 @@ class Random_Event {
     std::default_random_engine dre;
     UID_explicit uid;
     URD_explicit urd;
-    //typename boost::enable_if<std::is_integral<T>::value, UID> uid;
 
 public:
     std::vector<T> events;
