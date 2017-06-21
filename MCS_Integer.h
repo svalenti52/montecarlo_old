@@ -17,19 +17,21 @@
 class MCS_Integer : public MonteCarloSim {
 public:
 
-    Random_Event<int> random_event;
+    //Random_Event<int> random_events;
+
+    Distribution<int> random_events;
 
     MCS_Integer(int i_nr_trials, int i_min, int i_max, int i_nr_random_integer_values,
             Func_Two_Int_Vectors f)
             : MonteCarloSim(i_nr_trials, f), interim_count(1.0),
-              random_event(i_min, i_max, i_nr_random_integer_values) {
+              random_events(i_min, i_max, i_nr_random_integer_values) {
     }
 
     void run() override {
         for ( int ix = 0; ix < nr_trials; ++ix ) {
             interim_count = 0.0;
             integer_state_vector = permanent_state_vector;
-            if ( integer_condition_met_2(random_event.events, integer_state_vector) )
+            if ( integer_condition_met_2(random_events.events, integer_state_vector) )
                 cumulative_value += interim_count; // have to accommodate more than just incrementing by one
         }
 

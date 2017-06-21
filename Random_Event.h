@@ -21,26 +21,46 @@ template <class T>
 class Distribution <T, typename std::enable_if<std::is_integral<T>::value>::type> {
 public:
     std::default_random_engine dre;
-    std::uniform_int_distribution<T> uid;
+    std::uniform_int_distribution<T> uniform_distribution;
+    int nr_events;
 public:
-    Distribution(T i_min, T i_max)
-    : uid(i_min, i_max) {}
+    Distribution(T i_min, T i_max, int i_nr_events)
+    : uniform_distribution(i_min, i_max), nr_events(i_nr_events) {
+        for ( int ix = 0; ix < nr_events; ++ix )
+            events.push_back(uniform_distribution(dre));
+    }
+
+    void reload_random_values() {
+        for ( T& value : events )
+            value = uniform_distribution(dre);
+    }
+
+    std::vector<T> events;
 };
 
 template <class T>
 class Distribution <T, typename std::enable_if<std::is_floating_point<T>::value>::type> {
-public:
     std::default_random_engine dre;
-    std::uniform_real_distribution<T> urd;
+    std::uniform_real_distribution<T> uniform_distribution;
+    int nr_events;
 public:
-    Distribution(T i_lb, T i_ub)
-            : urd(i_lb, i_ub) {}
+    Distribution(T i_lb, T i_ub, int i_nr_events)
+            : uniform_distribution(i_lb, i_ub), nr_events(i_nr_events) {
+        for ( int ix = 0; ix < nr_events; ++ix )
+            events.push_back(uniform_distribution(dre));
+    }
+    void reload_random_values() {
+        for ( T& value : events )
+            value = uniform_distribution(dre);
+    }
+
+    std::vector<T> events;
 };
 
 //------------------------------------------------------
 //using namespace std;
 
-template <typename T>
+/*template <typename T>
 class Random_Event {
     using UID = std::uniform_int_distribution<T>;
     using URD = std::uniform_real_distribution<T>;
@@ -94,6 +114,6 @@ public:
             reload_random_value( ix, std::is_integral<T>() );
     }
 
-};
+}; */
 
 #endif //MONTECARLO_RANDOM_EVENT_H

@@ -16,18 +16,19 @@
 class MCS_Real : public MonteCarloSim {
 public:
 
-    Random_Event<double> random_event;
+    //Random_Event<double> random_events;
+    Distribution<double> random_events;
 
     MCS_Real(int i_nr_trials, double lb, double ub, int i_nr_random_reals, std::function<bool(std::vector<double>&)> f)
-            : MonteCarloSim(i_nr_trials, f ), random_event(lb, ub, i_nr_random_reals),
+            : MonteCarloSim(i_nr_trials, f ), random_events(lb, ub, i_nr_random_reals),
             interim_count(1.0) {
     }
 
     void run() override {
         for ( int ix = 0; ix < nr_trials; ++ix ) {
-            if ( real_condition_met(random_event.events) )
+            if ( real_condition_met(random_events.events) )
                 cumulative_value += interim_count;
-            random_event.reload_random_values();
+            random_events.reload_random_values();
         }
     }
 
