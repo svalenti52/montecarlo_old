@@ -30,8 +30,8 @@ public:
     void run() override {
         for ( int ix = 0; ix < nr_trials; ++ix ) {
             interim_count = 0.0;
-            integer_state_vector = permanent_state_vector;
-            if ( integer_condition_met_2(random_events.events, integer_state_vector) )
+            transient_state_vector = initial_state_vector;
+            if ( integer_condition_met_2(random_events.events, transient_state_vector) )
                 cumulative_value += interim_count; // have to accommodate more than just incrementing by one
         }
 
@@ -39,12 +39,12 @@ public:
 
     void load_integer_state_vector(std::vector<int>& i_state_vector) {
         for ( int i : i_state_vector )
-            permanent_state_vector.push_back(i);
+            initial_state_vector.push_back(i);
     }
 
     double interim_count;
-    std::vector<int> integer_state_vector;
-    std::vector<int> permanent_state_vector;
+    std::vector<int> transient_state_vector;
+    std::vector<int> initial_state_vector;
 };
 
 #endif //MONTECARLO_MCS_INTEGER_H

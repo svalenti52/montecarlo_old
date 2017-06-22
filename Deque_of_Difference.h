@@ -7,10 +7,6 @@
  * \details
  */
 
-//
-// Created by svalenti on 6/19/2017.
-//
-
 #ifndef MONTECARLO_DEQUE_OF_DIFFERENCE_H
 #define MONTECARLO_DEQUE_OF_DIFFERENCE_H
 
@@ -25,16 +21,21 @@ class Deque_of_Difference {
     T max_value; // used to determine ends, will be less than the ends
                 // but greater than all interior values
 public:
-    Deque_of_Difference(std::vector<T> elements,
+    Deque_of_Difference(std::vector<T>& elements,
             T begin_value, T end_value, T i_max_value) : max_value(i_max_value) {
 
-        std::vector<T> temp{std::move(elements)}; // do copy instead of move if need preserve input vector
-        std::sort(temp.begin(), temp.end());
+        std::sort(elements.begin(), elements.end()); ///> Original vector order change, passed by reference
 
-        for ( int ix = 0; ix < temp.size()-1; ++ix )
-            difference.push_back(temp[ix+1] - temp[ix]);
+        for ( int ix = 0; ix < elements.size()-1; ++ix )
+            difference.push_back(elements[ix+1] - elements[ix]);
         difference.push_back(end_value);
         difference.push_front(begin_value);
+    }
+
+    Deque_of_Difference(std::vector<T>& elements, T anchor_point, T i_max_value) : max_value(i_max_value) {
+
+        for ( T element : elements )
+            difference.push_back(element - anchor_point);
     }
 
     T prior_distance(int index) { difference[index]; }
@@ -51,6 +52,27 @@ public:
         return difference[index] < difference[index+1] ?
                difference[index] < difference[index-1] :
                difference[index+1] < difference[index+2];
+    }
+
+    bool closest_is_positive() {
+
+        if ( difference.size() == 1 ) return difference[0] > 0;
+
+        T smallest_diff = max_value;
+        bool positive = false;
+        for ( T element : difference ) {
+            if ( element < 0 ) {
+                if ( -element < smallest_diff ) {
+                    smallest_diff = -element;
+                    positive = false;
+                }
+            }
+            else if ( element < smallest_diff ) {
+                smallest_diff = element;
+                positive = true;
+            }
+        }
+        return positive;
     }
 };
 

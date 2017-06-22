@@ -19,7 +19,6 @@ class Distribution {};
 
 template <class T>
 class Distribution <T, typename std::enable_if<std::is_integral<T>::value>::type> {
-public:
     std::default_random_engine dre;
     std::uniform_int_distribution<T> uniform_distribution;
     int nr_events;
