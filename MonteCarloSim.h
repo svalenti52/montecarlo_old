@@ -11,6 +11,7 @@
 #include <functional>
 #include <iostream>
 #include <vector>
+#include "Random_Event.h"
 
 using Func_One_Double_Vector = std::function<bool(std::vector<double>&)>;
 using Func_One_Int_Vector  = std::function<bool(std::vector<int>&)>;
@@ -23,9 +24,6 @@ protected:
     double interim_value;
     int nr_random_integer_values;
     std::string message;
-public:
-    std::vector<int> random_integer_vector;
-protected:
     int nr_random_real_values;
     std::vector<double> random_real_vector;
     Func_One_Double_Vector real_condition_met;
@@ -91,26 +89,56 @@ public:
     }
 };
 
-template <class T, class Enable = void>
-class MonteCarloSimx {};
+//template <class T, class Enable = void>
+//class MonteCarloSimx {};
 
 template <class T>
-class MonteCarloSimx <T, typename std::enable_if<std::is_integral<T>::value>::type> {
+class MonteCarloSimx {
+        //<T, typename std::enable_if<std::is_integral<T>::value>::type> {
 protected:
     int nr_trials;
     double cumulative_value;
     double interim_value;
-    int nr_random_integer_values;
     std::string message;
+    std::function<bool(std::vector<T>&, std::vector<T>&)> condition_met;
+    std::vector<T> state_vector;
+    Distribution<T> distribution;
 public:
     MonteCarloSimx( int i_nr_trials,
-            Func_One_Double_Vector i_condition_met )
-            : nr_trials(i_nr_trials), cumulative_value(0.0), message("probability is = ") {
-        //real_condition_met = i_condition_met;
+            std::function<bool(std::vector<T>&, std::vector<T>&)> i_condition_met,
+            T i_lb, T i_ub, int nr_events )
+            : nr_trials(i_nr_trials), cumulative_value(0.0),
+              interim_value(1.0), message("probability is = "),
+                condition_met(i_condition_met),
+                distribution(i_lb, i_ub, nr_events) {
+    }
+
+    virtual void run() {
+        for ( int ix = 0; ix < nr_trials; ++nr_trials ) {
+            if ( condition_met(distribution.events, state_vector) )
+                cumulative_value += interim_value;
+            distribution.reload_random_values();
+        }
+    }
+
+    inline void increment_interim_value() {
+        ++interim_value;
+    }
+
+    virtual void assign_interim_value(double d) {
+        interim_value = d;
+    }
+
+    virtual void change_message(const std::string& s) {
+        message = s;
+    }
+
+    virtual void print_result() {
+        std::cout << message << cumulative_value/static_cast<double>(nr_trials) << '\n';
     }
 };
 
-template <class T>
-class MonteCarloSimx <T, typename std::enable_if<std::is_floating_point<T>::value>::type> {};
+//template <class T>
+//class MonteCarloSimx <T, typename std::enable_if<std::is_floating_point<T>::value>::type> {};
 
 #endif //MONTECARLO_MONTECARLOSIM_H

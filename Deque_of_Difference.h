@@ -61,7 +61,7 @@ public:
      * to a different index, in which case, the element at position index would not be a member
      * of a mutually closest set.
      * @param index - indicates position of element to test for membership.
-     * @return - indicates whether element is a member.
+     * @return - indicates whether element is a member of the mutually closest set.
      */
     bool member_of_mutually_closest(int index) {
         if ( differences[index] > max_value )
@@ -72,6 +72,8 @@ public:
                differences[index] < differences[index-1] :
                differences[index+1] < differences[index+2];
     }
+
+    //--------------------------------------------------------------------------------------------
 
     /**
      * Constructs a deque of differences of an input vector of elements and a given anchor point;
