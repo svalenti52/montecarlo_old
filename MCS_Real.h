@@ -20,19 +20,19 @@ public:
     Distribution<double> random_events;
 
     MCS_Real(int i_nr_trials, double lb, double ub, int i_nr_random_reals, std::function<bool(std::vector<double>&)> f)
-            : MonteCarloSim(i_nr_trials, f ), random_events(lb, ub, i_nr_random_reals),
-            interim_count(1.0) {
+            : MonteCarloSim(i_nr_trials, f ), random_events(lb, ub, i_nr_random_reals) {
+        interim_value = 1.0;
     }
 
     void run() override {
         for ( int ix = 0; ix < nr_trials; ++ix ) {
             if ( real_condition_met(random_events.events) )
-                cumulative_value += interim_count;
+                cumulative_value += interim_value;
             random_events.reload_random_values();
         }
     }
 
-    double interim_count;
+    //double interim_count;
 };
 
 #endif //MONTECARLO_MCS_REAL_H

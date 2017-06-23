@@ -24,7 +24,7 @@ class Distribution <T, typename std::enable_if<std::is_integral<T>::value>::type
     int nr_events;
 public:
     Distribution(T i_min, T i_max, int i_nr_events)
-    : uniform_distribution(i_min, i_max), nr_events(i_nr_events) {
+            : uniform_distribution(i_min, i_max), nr_events(i_nr_events) {
         for ( int ix = 0; ix < nr_events; ++ix )
             events.push_back(uniform_distribution(dre));
     }

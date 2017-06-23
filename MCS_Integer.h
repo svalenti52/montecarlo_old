@@ -23,16 +23,17 @@ public:
 
     MCS_Integer(int i_nr_trials, int i_min, int i_max, int i_nr_random_integer_values,
             Func_Two_Int_Vectors f)
-            : MonteCarloSim(i_nr_trials, f), interim_count(1.0),
+            : MonteCarloSim(i_nr_trials, f),
               random_events(i_min, i_max, i_nr_random_integer_values) {
+        interim_value = 1.0;
     }
 
     void run() override {
         for ( int ix = 0; ix < nr_trials; ++ix ) {
-            interim_count = 0.0;
+            interim_value = 0.0;
             transient_state_vector = initial_state_vector;
             if ( integer_condition_met_2(random_events.events, transient_state_vector) )
-                cumulative_value += interim_count; // have to accommodate more than just incrementing by one
+                cumulative_value += interim_value; // have to accommodate more than just incrementing by one
         }
 
     }
@@ -42,7 +43,7 @@ public:
             initial_state_vector.push_back(i);
     }
 
-    double interim_count;
+    //double interim_count;
     std::vector<int> transient_state_vector;
     std::vector<int> initial_state_vector;
 };
