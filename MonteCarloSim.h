@@ -92,7 +92,7 @@ public:
 //template <class T, class Enable = void>
 //class MonteCarloSimx {};
 
-template <class T>
+template <class T, class U>
 class MonteCarloSimx {
         //<T, typename std::enable_if<std::is_integral<T>::value>::type> {
 protected:
@@ -100,24 +100,26 @@ protected:
     double cumulative_value;
     double interim_value;
     std::string message;
-    std::function<bool(std::vector<T>&, std::vector<T>&)> condition_met;
-    std::vector<T> state_vector;
-    Distribution<T> distribution;
+    std::function<bool(std::vector<T>&, std::vector<U>&)> condition_met;
+    Distribution<T> primary_distribution;
+    Distribution<U> secondary_distribution;
 public:
     MonteCarloSimx( int i_nr_trials,
             std::function<bool(std::vector<T>&, std::vector<T>&)> i_condition_met,
-            T i_lb, T i_ub, int nr_events )
+            T i_lb_primary, T i_ub_primary, int nr_events_primary,
+            U i_lb_secondary, U i_ub_secondary, int nr_events_secondary )
             : nr_trials(i_nr_trials), cumulative_value(0.0),
               interim_value(1.0), message("probability is = "),
                 condition_met(i_condition_met),
-                distribution(i_lb, i_ub, nr_events) {
+                primary_distribution(i_lb_primary, i_ub_primary, nr_events_primary),
+                secondary_distribution(i_lb_secondary, i_ub_secondary, nr_events_secondary ) {
     }
 
     virtual void run() {
-        for ( int ix = 0; ix < nr_trials; ++nr_trials ) {
-            if ( condition_met(distribution.events, state_vector) )
+        for ( int ix = 0; ix < nr_trials; ++ix ) {
+            if ( condition_met(primary_distribution.events, secondary_distribution.events) )
                 cumulative_value += interim_value;
-            distribution.reload_random_values();
+            primary_distribution.reload_random_values();
         }
     }
 
@@ -125,8 +127,8 @@ public:
         ++interim_value;
     }
 
-    virtual void assign_interim_value(double d) {
-        interim_value = d;
+    virtual void assign_interim_value(double chunk) {
+        interim_value = chunk;
     }
 
     virtual void change_message(const std::string& s) {
