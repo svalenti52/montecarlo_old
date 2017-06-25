@@ -17,6 +17,9 @@ using Func_One_Double_Vector = std::function<bool(std::vector<double>&)>;
 using Func_One_Int_Vector  = std::function<bool(std::vector<int>&)>;
 using Func_Two_Int_Vectors = std::function<bool(std::vector<int>&, std::vector<int>&)>;
 
+using VEC_DOUBLE = std::vector<double>;
+using VEC_INTEGER = std::vector<int>;
+
 class MonteCarloSim {
 protected:
     int nr_trials;
@@ -100,12 +103,13 @@ protected:
     double cumulative_value;
     double interim_value;
     std::string message;
-    std::function<bool(std::vector<T>&, std::vector<U>&)> condition_met;
     Distribution<T> primary_distribution;
     Distribution<U> secondary_distribution;
+    std::function<bool(std::vector<T>&, std::vector<U>&)> condition_met;
+    std::function<bool(Distribution<T>&, Distribution<U>&, double&)> condition_metx;
 public:
     MonteCarloSimx( int i_nr_trials,
-            std::function<bool(std::vector<T>&, std::vector<T>&)> i_condition_met,
+            std::function<bool(std::vector<T>&, std::vector<U>&)> i_condition_met,
             T i_lb_primary, T i_ub_primary, int nr_events_primary,
             U i_lb_secondary, U i_ub_secondary, int nr_events_secondary )
             : nr_trials(i_nr_trials), cumulative_value(0.0),
@@ -115,9 +119,20 @@ public:
                 secondary_distribution(i_lb_secondary, i_ub_secondary, nr_events_secondary ) {
     }
 
+    MonteCarloSimx( int i_nr_trials,
+            std::function<bool(Distribution<T>&, Distribution<U>&, double&)> i_condition_met,
+            T i_lb_primary, T i_ub_primary, int nr_events_primary, int seed_primary,
+            U i_lb_secondary, U i_ub_secondary, int nr_events_secondary, int seed_secondary )
+            : nr_trials(i_nr_trials), cumulative_value(0.0),
+              interim_value(1.0), message("probability is = "),
+              condition_metx(i_condition_met),
+              primary_distribution(i_lb_primary, i_ub_primary, nr_events_primary, seed_primary),
+              secondary_distribution(i_lb_secondary, i_ub_secondary, nr_events_secondary, seed_secondary ) {
+    }
+
     virtual void run() {
         for ( int ix = 0; ix < nr_trials; ++ix ) {
-            if ( condition_met(primary_distribution.events, secondary_distribution.events) )
+            if ( condition_metx(primary_distribution, secondary_distribution, interim_value) )
                 cumulative_value += interim_value;
             primary_distribution.reload_random_values();
         }

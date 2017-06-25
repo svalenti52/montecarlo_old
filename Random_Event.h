@@ -29,9 +29,20 @@ public:
             events.push_back(uniform_distribution(dre));
     }
 
+    Distribution(T i_min, T i_max, int i_nr_events, int i_seed)
+            : uniform_distribution(i_min, i_max), nr_events(i_nr_events), dre(i_seed) {
+        for ( int ix = 0; ix < nr_events; ++ix )
+            events.push_back(uniform_distribution(dre));
+    }
+
     void reload_random_values() {
         for ( T& value : events )
             value = uniform_distribution(dre);
+    }
+
+    void reload_values (const std::vector<T>& vector_of_values) {
+        for ( int ix = 0; ix < events.size(); ++ix )
+            events[ix] = vector_of_values[ix];
     }
 
     std::vector<T> events;
@@ -48,9 +59,21 @@ public:
         for ( int ix = 0; ix < nr_events; ++ix )
             events.push_back(uniform_distribution(dre));
     }
+
+    Distribution(T i_lb, T i_ub, int i_nr_events, int i_seed)
+            : uniform_distribution(i_lb, i_ub), nr_events(i_nr_events), dre(i_seed) {
+        for ( int ix = 0; ix < nr_events; ++ix )
+            events.push_back(uniform_distribution(dre));
+    }
+
     void reload_random_values() {
         for ( T& value : events )
             value = uniform_distribution(dre);
+    }
+
+    void reload_values (const std::vector<T>& vector_of_values) {
+        for ( int ix = 0; ix < events.size(); ++ix )
+            events[ix] = vector_of_values[ix];
     }
 
     std::vector<T> events;
