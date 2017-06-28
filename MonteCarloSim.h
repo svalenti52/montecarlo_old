@@ -12,7 +12,7 @@
 #include <functional>
 #include <iostream>
 #include <vector>
-#include <val/montecarlo_alt/Distribution.h>
+#include <val/montecarlo/Distribution.h>
 
 //using Func_One_Double_Vector = std::function<bool(std::vector<double>&)>;
 //using Func_One_Int_Vector  = std::function<bool(std::vector<int>&)>;
