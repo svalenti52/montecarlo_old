@@ -1,30 +1,16 @@
-/**
- * \file Deque_of_Difference.h
- * \date 19-Jun-2017
- * \brief For a given vector, forms a deque of the differences between
- * subsequent values of the vector.
- *
- * \details There are (thus far) two different uses depending on the
- * constructor used:
- * 1) a deque of the differences between the elements
- * of an input vector; the vector is sorted prior to the differences
- * being taken; two 'maximal' elements are added to either end to represent
- * an infinite distance. The 'member_of_mutually_closest' function
- * applies here.
- * 2) a deque of the differences between the elements of an input vector
- * and a given anchor point. The 'closest_is_positive' function applies here.
- */
+//
+// Created by svalenti on 6/28/2017.
+//
 
-#ifndef MONTECARLO_DEQUE_OF_DIFFERENCE_H
-#define MONTECARLO_DEQUE_OF_DIFFERENCE_H
+#ifndef MONTECARLO_DIFFERENCES_H
+#define MONTECARLO_DIFFERENCES_H
 
 #include <deque>
 #include <vector>
 #include <algorithm>
 
 template <typename T>
-class Deque_of_Difference {
-
+class Differences {
     std::deque<T> differences;
     T max_value; ///> used to mark infinity or a relatively large value
 public:
@@ -39,13 +25,13 @@ public:
      * @param end_value - represents the infinite distance after the last element
      * @param i_max_value - greater than all the interior distances, less than the "infinite" values
      */
-    Deque_of_Difference(std::vector<T>& elements,
-            T begin_value, T end_value, T i_max_value) : max_value(i_max_value) {
+    Differences(std::vector<T>& elements,
+    T begin_value, T end_value, T i_max_value) : max_value(i_max_value) {
 
-        for ( int ix = 0; ix < elements.size()-1; ++ix )
+            for ( int ix = 0; ix < elements.size()-1; ++ix )
             differences.push_back(elements[ix+1] - elements[ix]);
-        differences.push_back(end_value);
-        differences.push_front(begin_value);
+            differences.push_back(end_value);
+            differences.push_front(begin_value);
     }
 
     T prior_distance(int index) { differences[index]; }
@@ -84,9 +70,9 @@ public:
      * @param anchor_point - a point selected to form the differences with elements.
      * @param i_max_value - a value selected to be the larger than any difference formed.
      */
-    Deque_of_Difference(std::vector<T>& elements, T anchor_point, T i_max_value) : max_value(i_max_value) {
+    Differences(std::vector<T>& elements, T anchor_point, T i_max_value) : max_value(i_max_value) {
 
-        for ( T element : elements )
+            for ( T element : elements )
             differences.push_back(element - anchor_point);
     }
 
@@ -117,4 +103,4 @@ public:
     }
 };
 
-#endif //MONTECARLO_DEQUE_OF_DIFFERENCE_H
+#endif //MONTECARLO_DIFFERENCES_H

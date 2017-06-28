@@ -6,3 +6,5 @@ worked out. A number of the existing exercises (See Git repositories
 Digital_Dice, Duelling_Idiots, etc.) are used to help verify the developing
 classes (see Digital_Dice files: dishwasher3.cpp and maltshop1.cpp for early
 examples).
+
+This has been changed recently to accommodate a template approach.
