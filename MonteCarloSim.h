@@ -14,13 +14,6 @@
 #include <vector>
 #include <val/montecarlo/Distribution.h>
 
-//using Func_One_Double_Vector = std::function<bool(std::vector<double>&)>;
-//using Func_One_Int_Vector  = std::function<bool(std::vector<int>&)>;
-//using Func_Two_Int_Vectors = std::function<bool(std::vector<int>&, std::vector<int>&)>;
-
-//using VEC_DOUBLE = std::vector<double>;
-//using VEC_INTEGER = std::vector<int>;
-
 /**
  * MonteCarloSimulation Class, consists of Constructor and the methods: run, change_message, and
  * print_result. Since the interim_value is now passed in to the condition_met function, the
@@ -37,9 +30,8 @@ protected:
     std::string message;
     Distribution<T, D1> primary_distribution;
     Distribution<U, D2> secondary_distribution;
-    std::function<bool(std::vector<T>&, std::vector<U>&)> condition_met;
     std::function<bool(Distribution<T, D1>&,
-            Distribution<U, D2>&, double&)> condition_metx;
+            Distribution<U, D2>&, double&)> condition_met;
 public:
 
     /**
@@ -57,12 +49,12 @@ public:
      *
      * @param i_nr_trials - Number of trials to run
      * @param i_condition_met - Function having primary, secondary distributions, and reference to interim_value
-     * @param i_lb_primary - Lower bound on primary distribution
-     * @param i_ub_primary - Upper bound on primary distribution
+     * @param i_lb_primary - Lower bound on primary distribution (in case of Bernoulli, numerator of bias)
+     * @param i_ub_primary - Upper bound on primary distribution (in case of Bernoulli, denominator of bias)
      * @param nr_events_primary - Number of events occurring on each trial for the primary distribution
      * @param seed_primary - Seed for the random number generator for the primary distribution
-     * @param i_lb_secondary - Lower bound on secondary distribution
-     * @param i_ub_secondary - Upper bound on secondary distribution
+     * @param i_lb_secondary - Lower bound on secondary distribution (in case of Bernoulli, numerator of bias)
+     * @param i_ub_secondary - Upper bound on secondary distribution (in case of Bernoulli, denominator of bias)
      * @param nr_events_secondary - Number of events occurring on each trial for the secondary distribution
      * @param seed_secondary - Seed for the random number generator for the secondary distribution
      */
@@ -73,9 +65,21 @@ public:
             U i_lb_secondary, U i_ub_secondary, int nr_events_secondary, int seed_secondary )
             : nr_trials(i_nr_trials), cumulative_value(0.0),
               interim_value(1.0), message("probability is = "),
-              condition_metx(i_condition_met),
+              condition_met(i_condition_met),
               primary_distribution(i_lb_primary, i_ub_primary, nr_events_primary, seed_primary),
               secondary_distribution(i_lb_secondary, i_ub_secondary, nr_events_secondary, seed_secondary ) {
+    }
+
+    MonteCarloSimulation( int i_nr_trials,
+            std::function<bool(Distribution<T, D1>&,
+                    Distribution<U, D2>&, double&)> i_condition_met,
+            Distribution<T, D1>& i_primary_distribution,
+            Distribution<U, D2>& i_secondary_distribution )
+            : nr_trials(i_nr_trials), cumulative_value(0.0),
+              interim_value(1.0), message("probability is = "),
+              condition_met(i_condition_met),
+              primary_distribution(i_primary_distribution),
+              secondary_distribution(i_secondary_distribution) {
     }
 
     /**
@@ -87,7 +91,7 @@ public:
      */
     virtual void run() {
         for ( int ix = 0; ix < nr_trials; ++ix ) {
-            if ( condition_metx(primary_distribution, secondary_distribution, interim_value) )
+            if ( condition_met(primary_distribution, secondary_distribution, interim_value) )
                 cumulative_value += interim_value;
             primary_distribution.reload_random_values();
         }

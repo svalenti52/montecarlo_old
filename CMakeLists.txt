@@ -3,5 +3,5 @@ project(montecarlo)
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(SOURCE_FILES MonteCarloSim.cpp MonteCarloSim.h Distribution.cpp Distribution.h Differences.cpp Differences.h)
+set(SOURCE_FILES MonteCarloSim.h Distribution.h Differences.h MonteCarloSim.cpp)
 add_library(montecarlo ${SOURCE_FILES})

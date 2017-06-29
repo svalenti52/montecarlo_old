@@ -4,6 +4,9 @@ Assembles the common features of the Monte Carlo simulation into a set of classe
 It is iterative in nature as the subtleties of implementation are
 worked out. A number of the existing exercises (See Git repositories
 Digital_Dice, Duelling_Idiots, etc.) are used to help verify the developing
-classes (see Digital_Dice files ending in MCS for examples).
+classes (see Digital_Dice files ending in _MCS for examples).
 
-This has been changed recently to accommodate a template approach.
+A template-based approach has been used since it allows the clean separation of
+classes by template specialization.
+
+Note also that the classes are header file based only (so far).

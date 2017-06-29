@@ -101,6 +101,19 @@ public:
         }
         return is_positive;
     }
+
+    /**
+     * @return the smallest non-negative value among the deque of differences
+     */
+    T smallest_positive_difference() {
+        T smallest_diff = max_value;
+        for ( T element : differences ) {
+            if ( element < 0 ) continue;
+            if ( element < smallest_diff )
+                smallest_diff = element;
+        }
+        return smallest_diff;
+    }
 };
 
 #endif //MONTECARLO_DIFFERENCES_H
