@@ -7,6 +7,7 @@
 #define MONTECARLO_DISTRIBUTION_H
 
 #include <vector>
+#include <deque>
 #include <random>
 
 /**
@@ -22,7 +23,8 @@ enum class DistributionType {
     VoidDistribution,
     UniformIntegral,
     UniformReal,
-    BernoulliIntegral
+    BernoulliIntegral,
+    UniformIntegral_Deque
 };
 
 /**
@@ -43,11 +45,6 @@ class Distribution <T, DistributionType::UniformIntegral> {
     std::uniform_int_distribution<T> randomDistribution;
     int nr_events;
 public:
-    /*Distribution(T i_min, T i_max, int i_nr_events)
-            : randomDistribution(i_min, i_max), nr_events(i_nr_events) {
-        for ( int ix = 0; ix < nr_events; ++ix )
-            events.push_back(randomDistribution(dre));
-    }*/
 
     /**
      *
@@ -86,11 +83,6 @@ class Distribution <T, DistributionType::UniformReal> {
     std::uniform_real_distribution<T> randomDistribution;
     int nr_events;
 public:
-    /*Distribution(T i_lb, T i_ub, int i_nr_events)
-            : randomDistribution(i_lb, i_ub), nr_events(i_nr_events) {
-        for ( int ix = 0; ix < nr_events; ++ix )
-            events.push_back(randomDistribution(dre));
-    }*/
 
     /**
      *
@@ -173,5 +165,51 @@ public:
     std::vector<T> events;
 };
 
+/**
+ * Template Specialization
+ * Distribution of Uniform Integral values
+ * The main container is a Deque to allow operations on both ends
+ * @tparam T should be an integral type (other than bool)
+ */
+template <class T>
+class Distribution <T, DistributionType::UniformIntegral_Deque> {
+    std::default_random_engine dre;
+    std::uniform_int_distribution<T> randomDistribution;
+    int nr_events;
+public:
+
+    /**
+     *
+     * @param i_min Minimum value to be used by the random number generator
+     * @param i_max Maximum value to be used by the random number generator
+     * @param i_nr_events Number of sequential events to generated
+     * @param i_seed Seed to be used by the random number generator (defaults to 1)
+     */
+    Distribution(T i_min, T i_max, int i_nr_events, int i_seed=1)
+            : randomDistribution(i_min, i_max), nr_events(i_nr_events), dre(i_seed) {
+        for ( int ix = 0; ix < nr_events; ++ix )
+            events.push_back(randomDistribution(dre));
+    }
+
+    void reload_random_values() {
+        for ( T& value : events )
+            value = randomDistribution(dre);
+    }
+
+    void reload_random_value(int index) {
+        events[index] = randomDistribution(dre);
+    }
+
+    void add_random_value_to_end() {
+        events.push_back(randomDistribution(dre));
+    }
+
+    void reload_values (const std::deque<T>& vector_of_values) {
+        for ( int ix = 0; ix < events.size(); ++ix )
+            events[ix] = vector_of_values[ix];
+    }
+
+    std::deque<T> events;
+};
 
 #endif //MONTECARLO_DISTRIBUTION_H
