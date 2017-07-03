@@ -18,13 +18,15 @@
  * - BernoulliIntegral: when using a uniform integral type that is restricted to two choices
  *      (We avoid using bool as type because internally vector<bool> would be used
  *      and it does not work with other internal functions that are part of the MCS).
+ *      NOTE: The prior statement is currently not applicable because of
+ *      changing over to a deque as the basic structure for multiple events.
+ *      It appears to have little effect on performance...
  */
 enum class DistributionType {
     VoidDistribution,
     UniformIntegral,
     UniformReal,
-    BernoulliIntegral,
-    UniformIntegral_Deque
+    BernoulliIntegral
 };
 
 /**
@@ -69,7 +71,15 @@ public:
             events[ix] = vector_of_values[ix];
     }
 
-    std::vector<T> events;
+    void reload_random_value(int index) {
+        events[index] = randomDistribution(dre);
+    }
+
+    void add_random_value_to_end() {
+        events.push_back(randomDistribution(dre));
+    }
+
+    std::deque<T> events;
 };
 
 /**
@@ -107,7 +117,15 @@ public:
             events[ix] = vector_of_values[ix];
     }
 
-    std::vector<T> events;
+    void reload_random_value(int index) {
+        events[index] = randomDistribution(dre);
+    }
+
+    void add_random_value_to_end() {
+        events.push_back(randomDistribution(dre));
+    }
+
+    std::deque<T> events;
 };
 
 /**
@@ -116,7 +134,8 @@ public:
  * @tparam T should be an integral type, suggest type restricted to 0 (false) and 1 (true)
  *      (Note: should not use bool because the library uses a vector and members of
  *      vector<bool> cannot be referenced using general methods).
- *      TBD - may see about using a Deque for this case.
+ *      NOTE: The prior statement is currently not applicable because of
+ *      changing over to a deque as the basic structure for multiple events.
  */
 template <class T>
 class Distribution <T, DistributionType::BernoulliIntegral> {
@@ -162,51 +181,12 @@ public:
             events[ix] = vector_of_values[ix];
     }
 
-    std::vector<T> events;
-};
-
-/**
- * Template Specialization
- * Distribution of Uniform Integral values
- * The main container is a Deque to allow operations on both ends
- * @tparam T should be an integral type (other than bool)
- */
-template <class T>
-class Distribution <T, DistributionType::UniformIntegral_Deque> {
-    std::default_random_engine dre;
-    std::uniform_int_distribution<T> randomDistribution;
-    int nr_events;
-public:
-
-    /**
-     *
-     * @param i_min Minimum value to be used by the random number generator
-     * @param i_max Maximum value to be used by the random number generator
-     * @param i_nr_events Number of sequential events to generated
-     * @param i_seed Seed to be used by the random number generator (defaults to 1)
-     */
-    Distribution(T i_min, T i_max, int i_nr_events, int i_seed=1)
-            : randomDistribution(i_min, i_max), nr_events(i_nr_events), dre(i_seed) {
-        for ( int ix = 0; ix < nr_events; ++ix )
-            events.push_back(randomDistribution(dre));
-    }
-
-    void reload_random_values() {
-        for ( T& value : events )
-            value = randomDistribution(dre);
-    }
-
     void reload_random_value(int index) {
         events[index] = randomDistribution(dre);
     }
 
     void add_random_value_to_end() {
         events.push_back(randomDistribution(dre));
-    }
-
-    void reload_values (const std::deque<T>& vector_of_values) {
-        for ( int ix = 0; ix < events.size(); ++ix )
-            events[ix] = vector_of_values[ix];
     }
 
     std::deque<T> events;

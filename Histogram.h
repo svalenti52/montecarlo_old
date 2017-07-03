@@ -56,7 +56,7 @@ public:
 template <typename T, typename U>
 std::ostream& operator <<(std::ostream& o, Bin<T,U>& b)
 {
-    o << b.index << "=" << b.amount << " ";
+    o << b.amount;
     return o;
 }
 
@@ -115,8 +115,9 @@ public:
 
 template <class T, class U>
 std::ostream& operator << (std::ostream& o, Histogram<T,U>& histogram) {
+    o << "Amount" << '\n';
     for ( Bin<T,U>& b : histogram.bins )
-        o << b;
+        o << b << '\n';
     return o;
 }
 
