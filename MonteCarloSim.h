@@ -98,6 +98,20 @@ public:
     }
 
     /**
+     * run_2_distributions - this one automatically resets the secondary distribution as part of
+     * "running" the simulation. TBD - need to rethink the handling of state vectors that need
+     * reloading separately.
+     */
+    virtual void run_2_distributions() {
+        for ( int ix = 0; ix < nr_trials; ++ix ) {
+            if ( condition_met(primary_distribution, secondary_distribution, interim_value) )
+                cumulative_value += interim_value;
+            primary_distribution.reload_random_values();
+            secondary_distribution.reload_random_values();
+        }
+    }
+
+    /**
      * change_message - allows the changing of the message printed in print_result. The default
      * is "probability is = " which is not always appropriate.
      * @param s - string of message to which to change.

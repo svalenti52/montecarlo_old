@@ -79,6 +79,13 @@ public:
         events.push_back(randomDistribution(dre));
     }
 
+    T sum() {
+        T cumulative = 0;
+        for ( T element : events )
+            cumulative += element;
+        return cumulative;
+    }
+
     std::deque<T> events;
 };
 
@@ -123,6 +130,13 @@ public:
 
     void add_random_value_to_end() {
         events.push_back(randomDistribution(dre));
+    }
+
+    T sum() {
+        T cumulative = 0;
+        for ( T element : events )
+            cumulative += element;
+        return cumulative;
     }
 
     std::deque<T> events;
