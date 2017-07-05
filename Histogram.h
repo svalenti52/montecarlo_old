@@ -87,15 +87,24 @@ public:
             total_amount(0)
     {
         nr_bins = (upper_bound_right_edge - lower_bound_left_edge) / bin_width;
-        for ( int ix = 0; ix < nr_bins; ++ix )
-            bins.push_back(Bin<T,U>(ix, lower_bound_left_edge+bin_width, bin_width));
+        for ( int ix = 1; ix <= nr_bins; ++ix )
+            bins.push_back(Bin<T,U>(ix, lower_bound_left_edge+ix*bin_width, bin_width));
     }
 
     void increment_bucket(int which_bin) {
         int adjusted_index = which_bin - (lower_bound_left_edge + bin_width);
+        adjusted_index /= bin_width;
         if ( adjusted_index < 0 || adjusted_index >= nr_bins ) throw;
         bins[adjusted_index].amount += 1;
         total_amount += 1;
+    }
+
+    void add_to_bucket(int which_bin, U i_amount) {
+        int adjusted_index = which_bin - (lower_bound_left_edge + bin_width);
+        adjusted_index /= bin_width;
+        if ( adjusted_index < 0 || adjusted_index >= nr_bins ) throw;
+        bins[adjusted_index].amount += i_amount;
+        total_amount += i_amount;
     }
 
     int get_midpoint() {
