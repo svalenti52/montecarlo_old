@@ -2,6 +2,17 @@
  * \file Histogram.h
  * \date 29-Jun-2017
  *
+ * \brief Histogram class, with templates for two types: interval (x-axis) and amount (y-axis).
+ *
+ * \details The Histogram class consists of:
+ *      - four variables that delineate the structure of the intervals at a macro level
+ *      - a variable for tracking the total amount for the entire histogram
+ *      - a container for Bin which tracks both the interval extent and corresponding amount
+ *          for each sub-interval.
+ * The Histogram class also contains the following member functions:
+ *      - increment_bin: increments bin by 1 for counting applications
+ *      - add_to_bin: increments bin by an input parameter amount
+ *      - get_midpoint: returns bin number by which 50% probability has been reached
  */
 
 #ifndef MONTECARLO_HISTOGRAM_H
@@ -68,16 +79,30 @@ class Histogram;
 template <class T, class U>
 std::ostream& operator << (std::ostream&, Histogram<T,U>&);
 
+/**
+ * Histogram class
+ * @tparam T - arithmetic type, this applies to the interval (x-axis)
+ * @tparam U - arithmetic type, this applies to the amount (y-axis)
+ */
 template <class T, class U>
 class Histogram {
-    T lower_bound_left_edge;
-    T upper_bound_right_edge;
-    int nr_bins;
-    T bin_width;
-    std::vector<Bin<T,U>> bins;
 
-    U total_amount;
+    T lower_bound_left_edge; ///> lower bound of interval; for integers it is one less than integer represented
+    T upper_bound_right_edge; ///> upper bound of interval; for integers it is the integer represented
+    int nr_bins;                ///> number of bins that make up the interval of the histogram
+    T bin_width;                ///> width of an individual bin
+
+    std::vector<Bin<T,U>> bins; ///> vector of Bin (size is nr_bins)
+
+    U total_amount;         ///> Tracks total_amount contained in the histogram
 public:
+    /**
+     * Histogram class constructor - note that the extent of the interval is quite nicely represented
+     * by "upper_bound_right_edge - lower_bound_left_edge" regardless of the arithmetic type.
+     * @param i_lower_bound_left_edge - lower bound of "whole" interval
+     * @param i_upper_bound_right_edge - upper bound of "whole" interval
+     * @param i_bin_width - width of bin, should divide evenly into the parametrized interval
+     */
     Histogram(T i_lower_bound_left_edge,
             T i_upper_bound_right_edge,
             int i_bin_width) :
@@ -91,6 +116,12 @@ public:
             bins.push_back(Bin<T,U>(ix, lower_bound_left_edge+ix*bin_width, bin_width));
     }
 
+    /**
+     * increment_bucket - increments indicated bin amount by 1.
+     * @param which_bin - external indication of which bin to increment. Also increment total.
+     * It is adjusted so that the original lower_bound_right_edge aligns with the 0 component
+     * of the bins vector. (Note: lower_bound_right_edge = lower_bound_left_edge + bin_width).
+     */
     void increment_bucket(int which_bin) {
         int adjusted_index = which_bin - (lower_bound_left_edge + bin_width);
         adjusted_index /= bin_width;
@@ -99,6 +130,13 @@ public:
         total_amount += 1;
     }
 
+    /**
+     * add_to_bucket - adds i_amount to the bin indicated.
+     * @param which_bin - external indication of which bin to increment.
+     * It is adjusted so that the original lower_bound_right_edge aligns with the 0 component
+     * of the bins vector. (Note: lower_bound_right_edge = lower_bound_left_edge + bin_width).
+     * @param i_amount - amount to accumulate in both the indicated bin and total
+     */
     void add_to_bucket(int which_bin, U i_amount) {
         int adjusted_index = which_bin - (lower_bound_left_edge + bin_width);
         adjusted_index /= bin_width;
@@ -107,6 +145,14 @@ public:
         total_amount += i_amount;
     }
 
+    /**
+     * get_midpoint - calculates half_way_count, then determines the bin number at which it
+     * first equals or surpasses the half_way_count.
+     * Use Case: Alive_10_Years/challenge8_MCS.cpp.
+     * @return the returned index is adjusted to account for the lower_bound_right_edge being
+     * aligned with the bin at index 0.
+     * (Note: lower_bound_right_edge = lower_bound_left_edge + bin_width).
+     */
     int get_midpoint() {
         U half_way_count = total_amount / 2;
         U running_count = 0;
@@ -119,6 +165,12 @@ public:
         return ix + lower_bound_left_edge + bin_width;
     }
 
+    /**
+     * output stream operator, standard output of histogram. Currently, outputs in format
+     * for Python (also many others I am reasonably sure) to read for graphing.
+     * @param o
+     * @param histogram Object of type histogram. Outputs in format usable by Python.
+     */
     friend std::ostream& operator << <> (std::ostream& o, Histogram<T,U>& histogram);
 };
 
