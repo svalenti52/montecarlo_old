@@ -117,7 +117,7 @@ public:
     }
 
     /**
-     * increment_bucket - increments indicated bin amount by 1.
+     * increment_bin - increments indicated bin amount by 1.
      * @param which_bin - external indication of which bin to increment. Also increment total.
      * It is adjusted so that the original lower_bound_right_edge aligns with the 0 component
      * of the bins vector. (Note: lower_bound_right_edge = lower_bound_left_edge + bin_width).
@@ -131,7 +131,7 @@ public:
     }
 
     /**
-     * add_to_bucket - adds i_amount to the bin indicated.
+     * add_to_bin - adds i_amount to the bin indicated.
      * @param which_bin - external indication of which bin to increment.
      * It is adjusted so that the original lower_bound_right_edge aligns with the 0 component
      * of the bins vector. (Note: lower_bound_right_edge = lower_bound_left_edge + bin_width).
