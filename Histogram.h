@@ -122,7 +122,7 @@ public:
      * It is adjusted so that the original lower_bound_right_edge aligns with the 0 component
      * of the bins vector. (Note: lower_bound_right_edge = lower_bound_left_edge + bin_width).
      */
-    void increment_bucket(int which_bin) {
+    void increment_bin(int which_bin) {
         int adjusted_index = which_bin - (lower_bound_left_edge + bin_width);
         adjusted_index /= bin_width;
         if ( adjusted_index < 0 || adjusted_index >= nr_bins ) throw;
@@ -137,7 +137,7 @@ public:
      * of the bins vector. (Note: lower_bound_right_edge = lower_bound_left_edge + bin_width).
      * @param i_amount - amount to accumulate in both the indicated bin and total
      */
-    void add_to_bucket(int which_bin, U i_amount) {
+    void add_to_bin(int which_bin, U i_amount) {
         int adjusted_index = which_bin - (lower_bound_left_edge + bin_width);
         adjusted_index /= bin_width;
         if ( adjusted_index < 0 || adjusted_index >= nr_bins ) throw;
@@ -168,10 +168,10 @@ public:
     /**
      * output stream operator, standard output of histogram. Currently, outputs in format
      * for Python (also many others I am reasonably sure) to read for graphing.
-     * @param o
+     * @param o ostream that is the receipt of the objects to be printed; this is returned.
      * @param histogram Object of type histogram. Outputs in format usable by Python.
      */
-    friend std::ostream& operator << <> (std::ostream& o, Histogram<T,U>& histogram);
+    friend std::ostream& operator << <T,U> (std::ostream& o, Histogram<T,U>& histogram);
 };
 
 template <class T, class U>
