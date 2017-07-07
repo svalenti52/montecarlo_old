@@ -38,7 +38,7 @@ public:
 
     U amount; ///> amount associated with this bin
     
-    int index; ///> index associated with this bin
+    int index; ///> index associated with this bin, first element is one.
 
 public:
     /**
@@ -53,6 +53,16 @@ public:
             size_interval(i_size),
             amount(0) {}
 
+    /**
+     * inc_count_if_less_equal - tests an input parameter value for being less than or
+     * equal to the right edge. If it is, increments this bin's amount by one and returns
+     * true; if not returns false. Usually used as part of a for loop that terminates
+     * when returns true. In that case, it would start at the first interval, seeking
+     * the bin in which it belongs since subsequent bins have monotonically increasing
+     * values.
+     * @param v - input value.
+     * @return boolean value indicating whether the input value is LEQ to the right edge.
+     */
     bool inc_count_if_less_equal(T v)
     {
         if ( v <= right_edge_interval )
@@ -63,6 +73,10 @@ public:
         return false;
     }
 
+    /**
+     * add_amount - add amount to the amount of this bin.
+     * @param added_amount
+     */
     void add_amount(U added_amount) {
         amount += added_amount;
     }

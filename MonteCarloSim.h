@@ -70,6 +70,14 @@ public:
               secondary_distribution(i_lb_secondary, i_ub_secondary, nr_events_secondary, seed_secondary ) {
     }
 
+    /**
+     * MonteCarloSimulation - This will become the constructor of choice; the distributions are
+     * declared prior to MonteCarloSimulation object.
+     * @param i_nr_trials - Number of trials to run.
+     * @param i_condition_met - Function having primary, secondary distributions, and reference to interim_value.
+     * @param i_primary_distribution - Primary distribution.
+     * @param i_secondary_distribution - Secondary distribution.
+     */
     MonteCarloSimulation( int i_nr_trials,
             std::function<bool(Distribution<T, D1>&,
                     Distribution<U, D2>&, double&)> i_condition_met,
