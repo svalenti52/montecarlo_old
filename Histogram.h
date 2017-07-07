@@ -33,14 +33,20 @@ template <typename T, typename U>
 class Bin
 {
 public:
-    T right_edge_interval;
-    T size_interval;
+    T right_edge_interval; ///> right edge of bin; integer represented if type int
+    T size_interval; ///> bin_width
 
-    U amount;
-
-    int index;
+    U amount; ///> amount associated with this bin
+    
+    int index; ///> index associated with this bin
 
 public:
+    /**
+     * Bin class constructor
+     * @param i_index - index of bin within container, first element is one.
+     * @param i_right_edge_interval - value of right edge of bin
+     * @param i_size - bin_width
+     */
     Bin(int i_index, T i_right_edge_interval, T i_size) :
             index(i_index),
             right_edge_interval(i_right_edge_interval),
