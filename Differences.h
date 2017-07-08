@@ -34,6 +34,15 @@ public:
             differences.push_front(begin_value);
     }
 
+    Differences(std::deque<T>& elements,
+            T begin_value, T end_value, T i_max_value) : max_value(i_max_value) {
+
+        for ( int ix = 0; ix < elements.size()-1; ++ix )
+            differences.push_back(elements[ix+1] - elements[ix]);
+        differences.push_back(end_value);
+        differences.push_front(begin_value);
+    }
+
     T prior_distance(int index) { differences[index]; }
     T subsequent_distance(int index) { differences[index+1]; }
 
@@ -73,6 +82,12 @@ public:
     Differences(std::vector<T>& elements, T anchor_point, T i_max_value) : max_value(i_max_value) {
 
             for ( T element : elements )
+            differences.push_back(element - anchor_point);
+    }
+
+    Differences(std::deque<T>& elements, T anchor_point, T i_max_value) : max_value(i_max_value) {
+
+        for ( T element : elements )
             differences.push_back(element - anchor_point);
     }
 
