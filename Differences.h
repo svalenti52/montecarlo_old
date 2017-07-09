@@ -1,6 +1,16 @@
-//
-// Created by svalenti on 6/28/2017.
-//
+/**
+ * \file Differences.h
+ * \date 28-Jun-2017
+ *
+ * \brief Creates a sequence of differences based on an input sequence of values.
+ *
+ * \details For the first constructor, the input sequence of values is assumed to ordered.
+ * This class is currently driven by use cases
+ *      -   DigitalDice:bus_MCS.cpp
+ *      -   DigitalDice:gamow_elevator_MCS.cpp
+ *      -   DigitalDice:parkinglot_MCS.cpp
+ *
+ */
 
 #ifndef MONTECARLO_DIFFERENCES_H
 #define MONTECARLO_DIFFERENCES_H

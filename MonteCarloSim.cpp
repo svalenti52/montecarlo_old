@@ -10,3 +10,5 @@
 #include <val/montecarlo/Differences.h>
 #include <val/montecarlo/Distribution.h>
 #include <val/montecarlo/Histogram.h>
+#include <val/montecarlo/StateMatrix.h>
+
