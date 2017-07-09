@@ -185,6 +185,12 @@ public:
         return ix + lower_bound_left_edge + bin_width;
     }
 
+    void increment_if_in_range(T subInterval) {
+        for ( Bin<T,U>& b : bins )
+            if ( b.inc_count_if_less_equal(subInterval) )
+                break;
+    }
+
     /**
      * output stream operator, standard output of histogram. Currently, outputs in format
      * for Python (also many others I am reasonably sure) to read for graphing.
