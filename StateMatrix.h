@@ -24,20 +24,21 @@ class StateMatrix {
 
     int nr_trials;
 
-    std::vector<State> states;
-    int current_state;
-    int absorbing_state;
+    std::vector<State> states; ///> Aligned vector positions and state values in transitions
+    int current_state; ///> initialized at beginning of each trial and varying thereafter
+    int initial_state; ///> holds initial state
+    int absorbing_state; ///> holds final state
 
-    std::default_random_engine dre;
+    std::default_random_engine dre; ///> core random number generator
 
-    double cumulative_value;
+    double cumulative_value; ///> Accumulates interim value
 
 public:
 
-    StateMatrix(int i_nr_trials, std::vector<State> i_states, int i_current_state, int i_absorbing_state) :
+    StateMatrix(int i_nr_trials, std::vector<State> i_states, int i_initial_state, int i_absorbing_state) :
             nr_trials(i_nr_trials),
             states(i_states),
-            current_state(i_current_state),
+            initial_state(i_initial_state),
             absorbing_state(i_absorbing_state),
             cumulative_value(0.0) {}
 
@@ -45,7 +46,7 @@ public:
 
         for ( int ix = 0; ix < nr_trials; ++ix ) {
             double interim_value = 0.0;
-            double current_state = 0;
+            double current_state = initial_state;
             while ( current_state != absorbing_state ) {
                 int interim_index = states[current_state].uid(dre);
                 current_state = states[current_state].transitions[interim_index];

@@ -4,11 +4,14 @@
  *
  * \brief Represents a single state, with transition vector and uniform
  * integer distribution across the transition vector.
+ *
+ * \details state_ID can be any integral value but should ideally be
+ * idetified with the position within the StateMatrix vector. The
+ * transitions within the vector below MUST BE ALIGNED with the
+ * state's position in the StateMatrix's state vector. Note that i_min
+ * should be zero and that i_max should be be one less than the length
+ * of the transitions vector. Use case is DuellingIdiots/blind_spider_MCS.
  */
-
-//
-// Created by svalenti on 7/8/2017.
-//
 
 #ifndef MONTECARLO_STATE_H
 #define MONTECARLO_STATE_H
@@ -19,8 +22,8 @@
 class State {
 public:
     int state_ID;
-    std::vector<int> transitions;
-    std::uniform_int_distribution<int> uid;
+    std::vector<int> transitions; ///> Aligned with vector position in StateMatrix.
+    std::uniform_int_distribution<int> uid; ///> Based on length of transitions.
 
     State(int i_state_ID,
             std::vector<int> i_transitions,
