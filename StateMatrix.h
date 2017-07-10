@@ -25,7 +25,7 @@ class StateMatrix {
     int nr_trials;
 
     std::vector<State> states; ///> Aligned vector positions and state values in transitions
-    int current_state; ///> initialized at beginning of each trial and varying thereafter
+    //int current_state; ///> initialized at beginning of each trial and varying thereafter
     int initial_state; ///> holds initial state
     int absorbing_state; ///> holds final state
 
@@ -46,7 +46,7 @@ public:
 
         for ( int ix = 0; ix < nr_trials; ++ix ) {
             double interim_value = 0.0;
-            double current_state = initial_state;
+            int current_state = initial_state;
             while ( current_state != absorbing_state ) {
                 int interim_index = states[current_state].uid(dre);
                 current_state = states[current_state].transitions[interim_index];
