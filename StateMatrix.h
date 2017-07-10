@@ -25,7 +25,6 @@ class StateMatrix {
     int nr_trials;
 
     std::vector<State> states; ///> Aligned vector positions and state values in transitions
-    //int current_state; ///> initialized at beginning of each trial and varying thereafter
     int initial_state; ///> holds initial state
     int absorbing_state; ///> holds final state
 

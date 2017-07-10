@@ -6,7 +6,7 @@
  * integer distribution across the transition vector.
  *
  * \details state_ID can be any integral value but should ideally be
- * idetified with the position within the StateMatrix vector. The
+ * identified with the position within the StateMatrix vector. The
  * transitions within the vector below MUST BE ALIGNED with the
  * state's position in the StateMatrix's state vector. Note that i_min
  * should be zero and that i_max should be be one less than the length
