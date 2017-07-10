@@ -1,3 +1,11 @@
+/**
+ * \file State.h
+ * \date 8-Jul-2017
+ *
+ * \brief Represents a single state, with transition vector and uniform
+ * integer distribution across the transition vector.
+ */
+
 //
 // Created by svalenti on 7/8/2017.
 //

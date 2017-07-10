@@ -1,6 +1,15 @@
-//
-// Created by svalenti on 7/9/2017.
-//
+/**
+ * \file Chronology.h
+ * \date 9-Jul-2017
+ *
+ * \brief Class Chronology with time-based facilities for the
+ * Monte Carlo Simulation (possibly more general).
+ * 
+ * \details Added the StopWatch class which allows the timing
+ * of programs in milliseconds. The StopWatch is used by several
+ * of the programs from the Digital Dice, Duelling Idiots, and
+ * Alive 10 Years suites.
+ */
 
 #ifndef MONTECARLO_CHRONOLOGY_H
 #define MONTECARLO_CHRONOLOGY_H

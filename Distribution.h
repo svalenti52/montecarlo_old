@@ -1,6 +1,12 @@
 /**
  * \file Distribution.h
  * \date 27-Jun-2017
+ *
+ * \brief Template-based implementation with an enumeration used to separately
+ * define each distribution (since their signatures are distinct).
+ *
+ * \details tbd - try making a template of the distribution type. However, this
+ * may too complicated because of the varied requirements of the constructors.
  */
 
 #ifndef MONTECARLO_DISTRIBUTION_H

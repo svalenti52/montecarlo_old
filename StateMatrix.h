@@ -2,7 +2,15 @@
  * \file StateMatrix.h
  * \date 8-Jul-2017
  *
+ * \brief StateMatrix with vector of states, current_state (initialized with
+ * initial state for each trial), absorbing_state (the end state).
  *
+ * \details Replaces Monte Carlo Simulation class in that it includes the
+ * number of trials, a cumulative value, and contains a method for running
+ * the simulation. An interesting detail is the separation of the default
+ * random engine from the multiple distributions for the states.
+ * IMPORTANT: STATE NUMBERING MUST ALIGN WITH THE VECTOR POSITION OF THE
+ * STATES.
  */
 
 #ifndef MONTECARLO_STATEMATRIX_H
