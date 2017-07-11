@@ -137,4 +137,57 @@ public:
     }
 };
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+/**
+ * MonteCarloSimulation_redo Class, consists of Constructor and the methods: run, change_message, and
+ * print_result.
+ * @tparam T - For the x-axis or domain of the distribution, expected to be either integral or floating point.
+ * @tparam U - For the y-axis or range of the distribution, expected to be either integral or floating point.
+ * @tparam D - DistributionType (e.g., UniformIntegral, UniformReal)
+ * */
+
+template <class T, class U, DistributionType D>
+class MonteCarloSimulation_redo {
+protected:
+    int nr_trials;
+    U cumulative_value;
+    U interim_value;
+    std::string message;
+    Distribution<T, D> distribution;
+    std::function<bool(Distribution<T, D>&, U&)> condition_met;
+
+public:
+
+    MonteCarloSimulation_redo ( int _nr_trials,
+            std::function<bool(Distribution<T, D>&, U&)> _condition_met,
+            Distribution<T, D>& _distribution )
+            : nr_trials(_nr_trials), cumulative_value(0),
+            interim_value(1), message("probability is = "),
+            condition_met(_condition_met),
+            distribution(_distribution) {
+    }
+
+    virtual void run() {
+        for ( int ix = 0; ix < nr_trials; ++ix ) {
+            if ( condition_met(distribution, interim_value) )
+                cumulative_value += interim_value;
+            distribution.reload_random_values();
+        }
+    }
+
+    virtual void change_message(const std::string& s) {
+        message = s;
+    }
+
+    virtual void print_result() {
+        std::cout << message
+                  << static_cast<double>(cumulative_value)
+                          /
+                                  static_cast<double>(nr_trials) << '\n';
+    }
+};
+
 #endif //MONTECARLO_MONTECARLOSIM_H
