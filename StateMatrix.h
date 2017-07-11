@@ -47,8 +47,7 @@ public:
             double interim_value = 0.0;
             int current_state = initial_state;
             while ( current_state != absorbing_state ) {
-                int interim_index = states[current_state].uid(dre);
-                current_state = states[current_state].transitions[interim_index];
+                current_state = states[current_state].get_next_state(dre);
                 interim_value += 1.0;
             }
             cumulative_value += interim_value;
