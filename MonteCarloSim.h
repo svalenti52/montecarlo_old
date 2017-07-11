@@ -150,7 +150,7 @@ public:
  * */
 
 template <class T, class U, DistributionType D>
-class MonteCarloSimulation_redo {
+class MonteCarloSimulation_alpha {
 protected:
     int nr_trials;
     U cumulative_value;
@@ -161,7 +161,7 @@ protected:
 
 public:
 
-    MonteCarloSimulation_redo ( int _nr_trials,
+    MonteCarloSimulation_alpha ( int _nr_trials,
             std::function<bool(Distribution<T, D>&, U&)> _condition_met,
             Distribution<T, D>& _distribution )
             : nr_trials(_nr_trials), cumulative_value(0),
