@@ -15,6 +15,7 @@
 #include <vector>
 #include <deque>
 #include <random>
+#include <algorithm>
 
 /**
  * DistributionType enum class
@@ -35,6 +36,13 @@ enum class DistributionType {
     BernoulliIntegral
 };
 
+enum class Structure {
+    List_With_Repetition,
+    List_Without_Repetition,  ///> Permutations
+    Set_With_Repetition,
+    Set_Without_Repetition
+};
+
 /**
  * Primary template, note it has VoidDistribution as the default DistributionType.
  * @tparam T
@@ -52,6 +60,7 @@ class Distribution <T, DistributionType::UniformIntegral> {
     std::default_random_engine dre;
     std::uniform_int_distribution<T> randomDistribution;
     int nr_events;
+    Structure structure;
 public:
 
     /**
@@ -62,14 +71,26 @@ public:
      * @param i_seed Seed to be used by the random number generator (defaults to 1)
      */
     Distribution(T i_min, T i_max, int i_nr_events, int i_seed=1)
-            : randomDistribution(i_min, i_max), nr_events(i_nr_events), dre(i_seed) {
+            : randomDistribution(i_min, i_max), nr_events(i_nr_events), dre(i_seed),
+            structure(Structure::List_With_Repetition){
         for ( int ix = 0; ix < nr_events; ++ix )
             events.push_back(randomDistribution(dre));
     }
 
+    Distribution(int i_nr_events, Structure i_structure)
+            : randomDistribution(0, i_nr_events-1), nr_events(i_nr_events),
+            structure(i_structure) {
+        for ( int ix = 0; ix < nr_events; ++ix )
+            events.push_back(ix);
+        std::random_shuffle(events.begin(), events.end());
+    }
+
     void reload_random_values() {
-        for ( T& value : events )
-            value = randomDistribution(dre);
+        if ( structure == Structure::List_Without_Repetition )
+            std::random_shuffle(events.begin(), events.end());
+        else
+            for ( T& value : events )
+                value = randomDistribution(dre);
     }
 
     void reload_values (const std::vector<T>& vector_of_values) {
