@@ -19,8 +19,19 @@ class List_Without_Repetition {
     int nr_events;
 
 public:
-    List_Without_Repetition();
 
+    List_Without_Repetition(int nr_events) {
+        for ( int ix = 0; ix < nr_events; ++ix )
+            events.emplace_back(ix);
+        
+        std::random_shuffle(events.begin(), events.end());
+    }
+    
+    void reload_random_events() {
+        std::random_shuffle(events.begin(), events.end());
+    } 
+    
+    std::deque<int> events;
 };
 
 #endif //MONTECARLO_LIST_WITHOUT_REPETITION_H
