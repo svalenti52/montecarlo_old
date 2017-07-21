@@ -11,3 +11,4 @@
 #include <val/montecarlo/Distribution.h>
 #include <val/montecarlo/Histogram.h>
 #include <val/montecarlo/StateMatrix.h>
+#include <val/montecarlo/List_Without_Repetition.h>
