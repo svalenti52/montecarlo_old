@@ -33,9 +33,9 @@ since it allows the clean separation of classes by template specialization.
 On the other hand, it only makes sense to use integral types for the
 x-axis in the StateMatrix class.
 
-Note also that the classes are header file based only (so far).
+Note also, at this point, that the classes are header file based only.
 
 Note that MonteCarloSimulation_alpha has been added as an attempt at rebuilding
-the simulation library using what I have learned so far. It has so far been
+the simulation library using what I have learned so far. Currently it has been
 limited to one distribution and the second template parameter has been
-applied to the y-axis so far (as opposed to the secondary_distribution).
+applied to the y-axis (as opposed to the secondary_distribution).
