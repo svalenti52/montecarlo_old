@@ -2,7 +2,8 @@
  * \file List_Without_Repetition.h
  * \date 20-Jul-2017
  *
- * \brief
+ * \brief Integers selected from 0 up to nr_possible_events-1 (inclusive),
+ * distributed across nr_events (nr_events <= nr_possible_events).
  *
  *
  */
@@ -27,13 +28,20 @@ class List_Without_Repetition {
     double cumulative_value;
     std::string message;
 
+    /**
+     * select_members_from_possible_events - a set is used to randomly select
+     * nr_events from the pool of possible events. Once selection is complete,
+     * the selected members are then loaded into the events deque.
+     */
     void select_members_from_possible_events() {
         std::set<int> ordered_events;
         while ( ordered_events.size() < nr_events )
             ordered_events.insert(randomDistribution(dre));
 
+        events.clear();  /// out with the old events
+
         for ( int member : ordered_events )
-            events.emplace_back(member);
+            events.emplace_back(member); /// and in with the new events
     }
 
 public:
@@ -73,6 +81,12 @@ public:
 
     void print_result() {
         std::cout << message << cumulative_value/static_cast<double>(nr_trials) << '\n';
+    }
+
+    void print_elements() {
+        for ( int elements : events )
+            std::cout << elements << " ";
+        std::cout << '\n';
     }
 
     std::deque<int> events;
