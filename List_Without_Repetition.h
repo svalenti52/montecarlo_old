@@ -15,6 +15,8 @@
 #include <algorithm>
 #include <deque>
 #include <set>
+#include <functional>
+#include <iostream>
 
 class List_Without_Repetition {
 
@@ -50,7 +52,7 @@ public:
             std::function<bool(std::deque<int>&, double&)> _condition_met )
             : nr_trials(_nr_trials), randomDistribution(0, _nr_possible_events-1),
             nr_events(_nr_events), nr_possible_events(_nr_possible_events),
-              condition_met(_condition_met),
+              condition_met(std::move(_condition_met)),
             interim_value(1.0), cumulative_value(0.0),
             message("probability is = ") {
 
