@@ -65,21 +65,21 @@ public:
 
     /**
      *
-     * @param i_min Minimum value to be used by the random number generator
-     * @param i_max Maximum value to be used by the random number generator
-     * @param i_nr_events Number of sequential events to generated
-     * @param i_seed Seed to be used by the random number generator (defaults to 1)
+     * @param _min Minimum value to be used by the random number generator
+     * @param _max Maximum value to be used by the random number generator
+     * @param _nr_events Number of sequential events to generated
+     * @param _seed Seed to be used by the random number generator (defaults to 1)
      */
-    Distribution(T i_min, T i_max, int i_nr_events, int i_seed=1)
-            : randomDistribution(i_min, i_max), nr_events(i_nr_events), dre(i_seed),
+    Distribution(T _min, T _max, int _nr_events, int _seed=1)
+            : randomDistribution(_min, _max), nr_events(_nr_events), dre(_seed),
             structure(Structure::List_With_Repetition){
         for ( int ix = 0; ix < nr_events; ++ix )
             events.push_back(randomDistribution(dre));
     }
 
-    Distribution(int i_nr_events, Structure i_structure)
-            : randomDistribution(0, i_nr_events-1), nr_events(i_nr_events),
-            structure(i_structure) {
+    Distribution(int _nr_events, Structure _structure)
+            : randomDistribution(0, _nr_events-1), nr_events(_nr_events),
+            structure(_structure) {
         for ( int ix = 0; ix < nr_events; ++ix )
             events.push_back(ix);
         std::random_shuffle(events.begin(), events.end());
@@ -130,13 +130,13 @@ public:
 
     /**
      *
-     * @param i_lb Minimum value to be used by the random number generator
-     * @param i_ub Maximum value to be used as an upper bound by the random number generator
-     * @param i_nr_events Number of sequential events to generated
-     * @param i_seed Seed to be used by the random number generator (defaults to 1)
+     * @param _lb Minimum value to be used by the random number generator
+     * @param _ub Maximum value to be used as an upper bound by the random number generator
+     * @param _nr_events Number of sequential events to generated
+     * @param _seed Seed to be used by the random number generator (defaults to 1)
      */
-    Distribution(T i_lb, T i_ub, int i_nr_events, int i_seed=1)
-            : randomDistribution(i_lb, i_ub), nr_events(i_nr_events), dre(i_seed) {
+    Distribution(T _lb, T _ub, int _nr_events, int _seed=1)
+            : randomDistribution(_lb, _ub), nr_events(_nr_events), dre(_seed) {
         for ( int ix = 0; ix < nr_events; ++ix )
             events.push_back(randomDistribution(dre));
     }
@@ -187,14 +187,14 @@ public:
 
     /**
      *
-     * @param i_numerator Numerator of probability of 1 (true)
-     * @param i_denominator Denominator of probability of 1 (true)
-     * @param i_nr_events Number of sequential events to generated
-     * @param i_seed Seed to be used by the random number generator (defaults to 1)
+     * @param _numerator Numerator of probability of 1 (true)
+     * @param _denominator Denominator of probability of 1 (true)
+     * @param _nr_events Number of sequential events to generated
+     * @param _seed Seed to be used by the random number generator (defaults to 1)
      */
-    Distribution(T i_numerator, T i_denominator, int i_nr_events, int i_seed=1)
-            : randomDistribution(static_cast<double>(i_numerator) / static_cast<double>(i_denominator)),
-              nr_events(i_nr_events), dre(i_seed) {
+    Distribution(T _numerator, T _denominator, int _nr_events, int _seed=1)
+            : randomDistribution(static_cast<double>(_numerator) / static_cast<double>(_denominator)),
+              nr_events(_nr_events), dre(_seed) {
         for ( int ix = 0; ix < nr_events; ++ix )
             events.push_back(randomDistribution(dre));
     }
@@ -202,12 +202,12 @@ public:
     /**
      *
      * @param probability_of_true Fixed type double representing probability of 1 (true)
-     * @param i_nr_events Number of sequential events to generated
-     * @param i_seed Seed to be used by the random number generator (defaults to 1)
+     * @param _nr_events Number of sequential events to generated
+     * @param _seed Seed to be used by the random number generator (defaults to 1)
      */
-    Distribution(double probability_of_true, int i_nr_events, int i_seed=1)
+    Distribution(double probability_of_true, int _nr_events, int _seed=1)
             : randomDistribution(probability_of_true),
-              nr_events(i_nr_events), dre(i_seed) {
+              nr_events(_nr_events), dre(_seed) {
         for ( int ix = 0; ix < nr_events; ++ix )
             events.push_back(randomDistribution(dre));
     }

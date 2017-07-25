@@ -33,10 +33,10 @@ public:
      * @param elements - assumed sorted vector of data in ascending order (positive distances)
      * @param begin_value - represents the infinite distance before the first element
      * @param end_value - represents the infinite distance after the last element
-     * @param i_max_value - greater than all the interior distances, less than the "infinite" values
+     * @param _max_value - greater than all the interior distances, less than the "infinite" values
      */
     Differences(std::vector<T>& elements,
-    T begin_value, T end_value, T i_max_value) : max_value(i_max_value) {
+    T begin_value, T end_value, T _max_value) : max_value(_max_value) {
 
             for ( int ix = 0; ix < elements.size()-1; ++ix )
             differences.push_back(elements[ix+1] - elements[ix]);
@@ -45,7 +45,7 @@ public:
     }
 
     Differences(std::deque<T>& elements,
-            T begin_value, T end_value, T i_max_value) : max_value(i_max_value) {
+            T begin_value, T end_value, T _max_value) : max_value(_max_value) {
 
         for ( int ix = 0; ix < elements.size()-1; ++ix )
             differences.push_back(elements[ix+1] - elements[ix]);
@@ -87,15 +87,15 @@ public:
      * largest difference.
      * @param elements - vector of numeric elements.
      * @param anchor_point - a point selected to form the differences with elements.
-     * @param i_max_value - a value selected to be the larger than any difference formed.
+     * @param _max_value - a value selected to be the larger than any difference formed.
      */
-    Differences(std::vector<T>& elements, T anchor_point, T i_max_value) : max_value(i_max_value) {
+    Differences(std::vector<T>& elements, T anchor_point, T _max_value) : max_value(_max_value) {
 
-            for ( T element : elements )
+        for ( T element : elements )
             differences.push_back(element - anchor_point);
     }
 
-    Differences(std::deque<T>& elements, T anchor_point, T i_max_value) : max_value(i_max_value) {
+    Differences(std::deque<T>& elements, T anchor_point, T _max_value) : max_value(_max_value) {
 
         for ( T element : elements )
             differences.push_back(element - anchor_point);

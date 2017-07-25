@@ -47,47 +47,47 @@ public:
      * state vector or something similar (one or more of the use cases uses it this way).
      * Currently, the primary distribution is used as a container of random values (see run method below).
      *
-     * @param i_nr_trials - Number of trials to run
-     * @param i_condition_met - Function having primary, secondary distributions, and reference to interim_value
-     * @param i_lb_primary - Lower bound on primary distribution (in case of Bernoulli, numerator of bias)
-     * @param i_ub_primary - Upper bound on primary distribution (in case of Bernoulli, denominator of bias)
+     * @param _nr_trials - Number of trials to run
+     * @param _condition_met - Function having primary, secondary distributions, and reference to interim_value
+     * @param _lb_primary - Lower bound on primary distribution (in case of Bernoulli, numerator of bias)
+     * @param _ub_primary - Upper bound on primary distribution (in case of Bernoulli, denominator of bias)
      * @param nr_events_primary - Number of events occurring on each trial for the primary distribution
      * @param seed_primary - Seed for the random number generator for the primary distribution
-     * @param i_lb_secondary - Lower bound on secondary distribution (in case of Bernoulli, numerator of bias)
-     * @param i_ub_secondary - Upper bound on secondary distribution (in case of Bernoulli, denominator of bias)
+     * @param _lb_secondary - Lower bound on secondary distribution (in case of Bernoulli, numerator of bias)
+     * @param _ub_secondary - Upper bound on secondary distribution (in case of Bernoulli, denominator of bias)
      * @param nr_events_secondary - Number of events occurring on each trial for the secondary distribution
      * @param seed_secondary - Seed for the random number generator for the secondary distribution
      */
-    MonteCarloSimulation( int i_nr_trials,
+    MonteCarloSimulation( int _nr_trials,
             std::function<bool(Distribution<T, D1>&,
-                    Distribution<U, D2>&, double&)> i_condition_met,
-            T i_lb_primary, T i_ub_primary, int nr_events_primary, int seed_primary,
-            U i_lb_secondary, U i_ub_secondary, int nr_events_secondary, int seed_secondary )
-            : nr_trials(i_nr_trials), cumulative_value(0.0),
+                    Distribution<U, D2>&, double&)> _condition_met,
+            T _lb_primary, T _ub_primary, int nr_events_primary, int seed_primary,
+            U _lb_secondary, U _ub_secondary, int nr_events_secondary, int seed_secondary )
+            : nr_trials(_nr_trials), cumulative_value(0.0),
               interim_value(1.0), message("probability is = "),
-              condition_met(i_condition_met),
-              primary_distribution(i_lb_primary, i_ub_primary, nr_events_primary, seed_primary),
-              secondary_distribution(i_lb_secondary, i_ub_secondary, nr_events_secondary, seed_secondary ) {
+              condition_met(_condition_met),
+              primary_distribution(_lb_primary, _ub_primary, nr_events_primary, seed_primary),
+              secondary_distribution(_lb_secondary, _ub_secondary, nr_events_secondary, seed_secondary ) {
     }
 
     /**
      * MonteCarloSimulation - This will become the constructor of choice; the distributions are
      * declared prior to MonteCarloSimulation object.
-     * @param i_nr_trials - Number of trials to run.
-     * @param i_condition_met - Function having primary, secondary distributions, and reference to interim_value.
-     * @param i_primary_distribution - Primary distribution.
-     * @param i_secondary_distribution - Secondary distribution.
+     * @param _nr_trials - Number of trials to run.
+     * @param _condition_met - Function having primary, secondary distributions, and reference to interim_value.
+     * @param _primary_distribution - Primary distribution.
+     * @param _secondary_distribution - Secondary distribution.
      */
-    MonteCarloSimulation( int i_nr_trials,
+    MonteCarloSimulation( int _nr_trials,
             std::function<bool(Distribution<T, D1>&,
-                    Distribution<U, D2>&, double&)> i_condition_met,
-            Distribution<T, D1>& i_primary_distribution,
-            Distribution<U, D2>& i_secondary_distribution )
-            : nr_trials(i_nr_trials), cumulative_value(0.0),
+                    Distribution<U, D2>&, double&)> _condition_met,
+            Distribution<T, D1>& _primary_distribution,
+            Distribution<U, D2>& _secondary_distribution )
+            : nr_trials(_nr_trials), cumulative_value(0.0),
               interim_value(1.0), message("probability is = "),
-              condition_met(i_condition_met),
-              primary_distribution(i_primary_distribution),
-              secondary_distribution(i_secondary_distribution) {
+              condition_met(_condition_met),
+              primary_distribution(_primary_distribution),
+              secondary_distribution(_secondary_distribution) {
     }
 
     /**

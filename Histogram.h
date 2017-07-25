@@ -43,14 +43,14 @@ public:
 public:
     /**
      * Bin class constructor
-     * @param i_index - index of bin within container, first element is one.
-     * @param i_right_edge_interval - value of right edge of bin
-     * @param i_size - bin_width
+     * @param _index - index of bin within container, first element is one.
+     * @param _right_edge_interval - value of right edge of bin
+     * @param _size - bin_width
      */
-    Bin(int i_index, T i_right_edge_interval, T i_size) :
-            index(i_index),
-            right_edge_interval(i_right_edge_interval),
-            size_interval(i_size),
+    Bin(int _index, T _right_edge_interval, T _size) :
+            index(_index),
+            right_edge_interval(_right_edge_interval),
+            size_interval(_size),
             amount(0) {}
 
     /**
@@ -119,16 +119,16 @@ public:
     /**
      * Histogram class constructor - note that the extent of the interval is quite nicely represented
      * by "upper_bound_right_edge - lower_bound_left_edge" regardless of the arithmetic type.
-     * @param i_lower_bound_left_edge - lower bound of "whole" interval
-     * @param i_upper_bound_right_edge - upper bound of "whole" interval
-     * @param i_bin_width - width of bin, should divide evenly into the parametrized interval
+     * @param _lower_bound_left_edge - lower bound of "whole" interval
+     * @param _upper_bound_right_edge - upper bound of "whole" interval
+     * @param _bin_width - width of bin, should divide evenly into the parametrized interval
      */
-    Histogram(T i_lower_bound_left_edge,
-            T i_upper_bound_right_edge,
-            int i_bin_width) :
-            lower_bound_left_edge(i_lower_bound_left_edge),
-            upper_bound_right_edge(i_upper_bound_right_edge),
-            bin_width(i_bin_width),
+    Histogram(T _lower_bound_left_edge,
+            T _upper_bound_right_edge,
+            int _bin_width) :
+            lower_bound_left_edge(_lower_bound_left_edge),
+            upper_bound_right_edge(_upper_bound_right_edge),
+            bin_width(_bin_width),
             total_amount(0)
     {
         nr_bins = (upper_bound_right_edge - lower_bound_left_edge) / bin_width;
@@ -155,14 +155,14 @@ public:
      * @param which_bin - external indication of which bin to increment.
      * It is adjusted so that the original lower_bound_right_edge aligns with the 0 component
      * of the bins vector. (Note: lower_bound_right_edge = lower_bound_left_edge + bin_width).
-     * @param i_amount - amount to accumulate in both the indicated bin and total
+     * @param _amount - amount to accumulate in both the indicated bin and total
      */
-    void add_to_bin(int which_bin, U i_amount) {
+    void add_to_bin(int which_bin, U _amount) {
         int adjusted_index = which_bin - (lower_bound_left_edge + bin_width);
         adjusted_index /= bin_width;
         if ( adjusted_index < 0 || adjusted_index >= nr_bins ) throw;
-        bins[adjusted_index].amount += i_amount;
-        total_amount += i_amount;
+        bins[adjusted_index].amount += _amount;
+        total_amount += _amount;
     }
 
     /**

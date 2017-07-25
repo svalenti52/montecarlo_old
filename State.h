@@ -25,10 +25,10 @@ public:
     std::vector<int> transitions; ///> Aligned with vector position in StateMatrix.
     std::uniform_int_distribution<int> uid; ///> Based on length of transitions.
 
-    State(int i_state_ID,
-            std::vector<int> i_transitions)
-            : state_ID(i_state_ID), transitions(i_transitions),
-              uid(0, static_cast<int>(i_transitions.size()-1)) {}
+    State(int _state_ID,
+            const std::vector<int>& _transitions)
+            : state_ID(_state_ID), transitions(_transitions),
+              uid(0, static_cast<int>(_transitions.size()-1)) {}
 
     int get_next_state(std::default_random_engine& dre) {
         return transitions[uid(dre)];

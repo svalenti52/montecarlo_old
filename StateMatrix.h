@@ -34,11 +34,11 @@ class StateMatrix {
 
 public:
 
-    StateMatrix(int i_nr_trials, std::vector<State> i_states, int i_initial_state, int i_absorbing_state) :
-            nr_trials(i_nr_trials),
-            states(i_states),
-            initial_state(i_initial_state),
-            absorbing_state(i_absorbing_state),
+    StateMatrix(int _nr_trials, std::vector<State>& _states, int _initial_state, int _absorbing_state) :
+            nr_trials(_nr_trials),
+            states(std::move(_states)),
+            initial_state(_initial_state),
+            absorbing_state(_absorbing_state),
             cumulative_value(0.0) {}
 
     void run() {
