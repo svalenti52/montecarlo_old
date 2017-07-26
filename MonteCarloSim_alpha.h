@@ -32,12 +32,21 @@ protected:
     DRE dre;
     U cumulative_value;
     U interim_value;
-    std::string message;
+    std::string message; ///> message can be changed to match the meaning of cumulative_value/nr_trials
     Distribution<T, D> distribution;
     std::function<bool(Distribution<T, D>&, U&, DRE&)> condition_met;
 
 public:
 
+    /**
+     * MonteCarloSimulation - latest attempt at generalising a system includes separating the
+     * random number generator from the distribution. Also includes establishing a type for the
+     * values (y-axis).
+     * @param _nr_trials
+     * @param _seed
+     * @param _condition_met
+     * @param _distribution
+     */
     MonteCarloSimulation ( int _nr_trials, int _seed,
             std::function<bool(Distribution<T, D>&, U&, DRE&)> _condition_met,
             Distribution<T, D>& _distribution )
@@ -51,15 +60,10 @@ public:
     }
 
     /**
-     * Added load_random_values since it could no longer be done from the
-     * distribution. The dre is not defined in the distribution now.
-     * The signatures of the "load" and "reload" distribution
+     * The signatures of the "reload_random_values" and "condition_met"
      * functions were changed to accept dre from here.
-     * Also, changed the signature of the condition_met function to accommodate
-     * the dre.
      */
     virtual void run() {
-        distribution.load_random_values(dre);
         for ( int ix = 0; ix < nr_trials; ++ix ) {
             if ( condition_met(distribution, interim_value, dre) )
                 cumulative_value += interim_value;
