@@ -36,7 +36,8 @@ enum class DistributionType {
     UniformReal,
     BernoulliIntegral,
     PoissonIntegral,
-    ExponentialReal
+    ExponentialReal,
+    PiecewiseLinearReal
 };
 
 enum class Structure {
@@ -343,6 +344,59 @@ class Distribution<T, DistributionType::ExponentialReal> {
 public:
     Distribution(double _lambda, int _nr_events)
             : randomDistribution(_lambda), nr_events(_nr_events) {}
+
+    void load_random_values(std::default_random_engine& dre) {
+        for ( int ix = 0; ix < nr_events; ++ix )
+            events.push_back(randomDistribution(dre));
+    }
+
+    void reload_random_values(std::default_random_engine& dre) {
+        for ( T& value : events )
+            value = randomDistribution(dre);
+    }
+
+    void reload_values (const std::vector<T>& vector_of_values) {
+        for ( int ix = 0; ix < events.size(); ++ix )
+            events[ix] = vector_of_values[ix];
+    }
+
+    void reload_random_value(int index, std::default_random_engine& dre) {
+        events[index] = randomDistribution(dre);
+    }
+
+    void add_random_value_to_end(std::default_random_engine& dre) {
+        events.push_back(randomDistribution(dre));
+    }
+
+    /**
+     * show_contents - show, on cout, the contents of the deque
+     */
+    void show_contents() {
+        for ( T event : events )
+            std::cout << event << "  ";
+    }
+
+    std::deque<T> events;
+};
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+/**
+ * Template Specialization
+ * Piecewise Linear Distribution of real values
+ * @tparam T should be a floating point type
+ *
+ */
+template <class T>
+class Distribution<T, DistributionType::PiecewiseLinearReal> {
+    std::piecewise_linear_distribution<T> randomDistribution;
+    int nr_events;
+public:
+    using ITERATOR = std::vector<double>::iterator;
+    Distribution(ITERATOR _begin_intervals, ITERATOR _end_intervals,
+            ITERATOR begin_weights, int _nr_events)
+            : randomDistribution(_begin_intervals, _end_intervals, begin_weights), nr_events(_nr_events) {}
 
     void load_random_values(std::default_random_engine& dre) {
         for ( int ix = 0; ix < nr_events; ++ix )
