@@ -28,24 +28,24 @@ using DRE = std::default_random_engine;
 template <class T, class U, DistributionType D>
 class MonteCarloSimulation {
 protected:
-    int nr_trials;
-    DRE dre;
-    U cumulative_value;
-    U interim_value;
+    int nr_trials; ///> number of repeated trials run for the simulation
+    DRE dre;			///> default random engine (random number generator)
+    U cumulative_value; ///> accumulates the interim value for nr_trials
+    U interim_value;		///> value determined for each trial
     std::string message; ///> message can be changed to match the meaning of cumulative_value/nr_trials
-    Distribution<T, D> distribution;
-    std::function<bool(Distribution<T, D>&, U&, DRE&)> condition_met;
+    Distribution<T, D> distribution; ///> (e.g., real) and deque of numbers selected from it
+    std::function<bool(Distribution<T, D>&, U&, DRE&)> condition_met; ///> function containing particulars of the simulation
 
 public:
 
     /**
      * MonteCarloSimulation - latest attempt at generalising a system includes separating the
      * random number generator from the distribution. Also includes establishing a type for the
-     * values (y-axis).
-     * @param _nr_trials
-     * @param _seed
-     * @param _condition_met
-     * @param _distribution
+     * values (class U for the y-axis).
+     * @param _nr_trials number of repeated trials run for the simulation
+     * @param _seed integer seed for the random number generator
+     * @param _condition_met function containing particulars of the simulation
+     * @param _distribution (e.g., real) and deque of numbers selected from it
      */
     MonteCarloSimulation ( int _nr_trials, int _seed,
             std::function<bool(Distribution<T, D>&, U&, DRE&)> _condition_met,
@@ -83,7 +83,7 @@ public:
     }
 
     /**
-     * print_distribution - prints the contents of the distribution
+     * show_distribution - shows the contents of the distribution
      */
     void show_distribution() {
         distribution.show_contents();
