@@ -73,6 +73,16 @@ public:
         return false;
     }
 
+    bool add_if_less_equal(T v, U _amount)
+    {
+        if ( v <= right_edge_interval )
+        {
+            amount = amount + _amount;
+            return true;
+        }
+        return false;
+    }
+
     /**
      * add_amount - add amount to the amount of this bin.
      * @param added_amount
@@ -125,13 +135,13 @@ public:
      */
     Histogram(T _lower_bound_left_edge,
             T _upper_bound_right_edge,
-            int _bin_width) :
+            T _bin_width) : /// int bin_width
             lower_bound_left_edge(_lower_bound_left_edge),
             upper_bound_right_edge(_upper_bound_right_edge),
             bin_width(_bin_width),
             total_amount(0)
     {
-        nr_bins = (upper_bound_right_edge - lower_bound_left_edge) / bin_width;
+        nr_bins = static_cast<int>((upper_bound_right_edge - lower_bound_left_edge) / bin_width);
         for ( int ix = 1; ix <= nr_bins; ++ix )
             bins.push_back(Bin<T,U>(ix, lower_bound_left_edge+ix*bin_width, bin_width));
     }
@@ -188,6 +198,12 @@ public:
     void increment_if_in_range(T subInterval) {
         for ( Bin<T,U>& b : bins )
             if ( b.inc_count_if_less_equal(subInterval) )
+                break;
+    }
+
+    void add_if_in_range(T x_axis_value, U _amount) {
+        for ( Bin<T,U>& b : bins )
+            if ( b.add_if_less_equal(x_axis_value, _amount) )
                 break;
     }
 
