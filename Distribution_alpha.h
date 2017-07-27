@@ -34,7 +34,8 @@ enum class DistributionType {
     VoidDistribution,
     UniformIntegral,
     UniformReal,
-    BernoulliIntegral
+    BernoulliIntegral,
+    PoissonIntegral
 };
 
 enum class Structure {
@@ -59,7 +60,7 @@ class Distribution {};
 
 /**
  * Template Specialization
- * Distribution of Uniform Integral values
+ * Uniform Distribution of Integral values
  * @tparam T should be an integral type (other than bool)
  */
 template <class T>
@@ -121,6 +122,14 @@ public:
         return cumulative;
     }
 
+    /**
+    * show_contents - show, on cout, the contents of the deque
+    */
+    void show_contents() {
+        for ( T event : events )
+            std::cout << event << "  ";
+    }
+
     std::deque<T> events;
 };
 
@@ -129,7 +138,7 @@ public:
 
 /**
  * Template Specialization
- * Distribution of Uniform Floating Point values
+ * Uniform Distribution of Floating Point values
  * @tparam T should be an floating point type
  */
 template <class T>
@@ -181,6 +190,14 @@ public:
         return cumulative;
     }
 
+    /**
+    * show_contents - show, on cout, the contents of the deque
+    */
+    void show_contents() {
+        for ( T event : events )
+            std::cout << event << "  ";
+    }
+
     std::deque<T> events;
 };
 
@@ -189,7 +206,7 @@ public:
 
 /**
  * Template Specialization
- * Distribution of Integral values restricted to two values
+ * Bernoulli Distribution of Integral values restricted to two values
  * @tparam T should be an integral type, suggest type restricted to 0 (false) and 1 (true)
  *
  */
@@ -245,6 +262,65 @@ public:
 
     void add_random_value_to_end(std::default_random_engine& dre) {
         events.push_back(randomDistribution(dre));
+    }
+
+    /**
+    * show_contents - show, on cout, the contents of the deque
+    */
+    void show_contents() {
+        for ( T event : events )
+            std::cout << event << "  ";
+    }
+
+    std::deque<T> events;
+};
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+/**
+ * Template Specialization
+ * Poisson Distribution of non-negative integral values, unbounded on the right
+ * @tparam T should be an integral type
+ *
+ */
+template <class T>
+class Distribution<T, DistributionType::PoissonIntegral> {
+    std::poisson_distribution<T> randomDistribution;
+    int nr_events;
+public:
+    Distribution(double _mean, int _nr_events)
+            : randomDistribution(_mean), nr_events(_nr_events) {}
+
+    void load_random_values(std::default_random_engine& dre) {
+        for ( int ix = 0; ix < nr_events; ++ix )
+            events.push_back(randomDistribution(dre));
+    }
+
+    void reload_random_values(std::default_random_engine& dre) {
+        for ( T& value : events )
+            value = randomDistribution(dre);
+    }
+
+    void reload_values (const std::vector<T>& vector_of_values) {
+        for ( int ix = 0; ix < events.size(); ++ix )
+            events[ix] = vector_of_values[ix];
+    }
+
+    void reload_random_value(int index, std::default_random_engine& dre) {
+        events[index] = randomDistribution(dre);
+    }
+
+    void add_random_value_to_end(std::default_random_engine& dre) {
+        events.push_back(randomDistribution(dre));
+    }
+
+    /**
+     * show_contents - show, on cout, the contents of the deque
+     */
+    void show_contents() {
+        for ( T event : events )
+            std::cout << event << "  ";
     }
 
     std::deque<T> events;

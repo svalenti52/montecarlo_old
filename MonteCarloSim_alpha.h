@@ -81,6 +81,13 @@ public:
                           /
                                   static_cast<double>(nr_trials) << '\n';
     }
+
+    /**
+     * print_distribution - prints the contents of the distribution
+     */
+    void show_distribution() {
+        distribution.show_contents();
+    }
 };
 
 #endif //MONTECARLO_MONTECARLOSIM_ALPHA_H
