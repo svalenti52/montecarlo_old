@@ -83,6 +83,10 @@ public:
         return false;
     }
 
+    void inc_count() {
+        amount = amount + 1;
+    }
+
     /**
      * add_amount - add amount to the amount of this bin.
      * @param added_amount
@@ -195,16 +199,24 @@ public:
         return ix + lower_bound_left_edge + bin_width;
     }
 
-    void increment_if_in_range(T subInterval) {
-        for ( Bin<T,U>& b : bins )
-            if ( b.inc_count_if_less_equal(subInterval) )
+    void increment_if_in_range(T x_axis_value) {
+        double bin_width_inverse = 1.0 /static_cast<double>(bin_width);
+        int index_bin = static_cast<int>(std::floor(x_axis_value * bin_width_inverse));
+        bins[index_bin].inc_count();
+        /*for ( Bin<T,U>& b : bins )
+            if ( b.inc_count_if_less_equal(x_axis_value) )
                 break;
+        */
     }
 
     void add_if_in_range(T x_axis_value, U _amount) {
-        for ( Bin<T,U>& b : bins )
+        double bin_width_inverse = 1.0 /static_cast<double>(bin_width);
+        int index_bin = static_cast<int>(std::floor(x_axis_value * bin_width_inverse));
+        bins[index_bin].add_amount(_amount);
+        /*for ( Bin<T,U>& b : bins )
             if ( b.add_if_less_equal(x_axis_value, _amount) )
                 break;
+        */
     }
 
     /**
