@@ -125,6 +125,7 @@ class Histogram {
     T upper_bound_right_edge; ///> upper bound of interval; for integers it is the integer represented
     int nr_bins;                ///> number of bins that make up the interval of the histogram
     T bin_width;                ///> width of an individual bin
+    double bin_width_inverse;   ///> multiplicative inverse of bin_width
 
     std::vector<Bin<T,U>> bins; ///> vector of Bin (size is nr_bins)
 
@@ -143,6 +144,7 @@ public:
             lower_bound_left_edge(_lower_bound_left_edge),
             upper_bound_right_edge(_upper_bound_right_edge),
             bin_width(_bin_width),
+            bin_width_inverse(1.0 / static_cast<double>(_bin_width)),
             total_amount(0)
     {
         nr_bins = static_cast<int>((upper_bound_right_edge - lower_bound_left_edge) / bin_width);
@@ -200,7 +202,7 @@ public:
     }
 
     void increment_if_in_range(T x_axis_value) {
-        double bin_width_inverse = 1.0 /static_cast<double>(bin_width);
+        //double bin_width_inverse = 1.0 /static_cast<double>(bin_width);
         int index_bin = static_cast<int>(std::floor(x_axis_value * bin_width_inverse));
         bins[index_bin].inc_count();
         /*for ( Bin<T,U>& b : bins )
@@ -210,7 +212,7 @@ public:
     }
 
     void add_if_in_range(T x_axis_value, U _amount) {
-        double bin_width_inverse = 1.0 /static_cast<double>(bin_width);
+        //double bin_width_inverse = 1.0 /static_cast<double>(bin_width);
         int index_bin = static_cast<int>(std::floor(x_axis_value * bin_width_inverse));
         bins[index_bin].add_amount(_amount);
         /*for ( Bin<T,U>& b : bins )
