@@ -87,6 +87,7 @@ public:
      */
     void show_distribution() {
         distribution.show_contents();
+        std::cout << '\n';
     }
 };
 
