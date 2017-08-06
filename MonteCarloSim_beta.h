@@ -1,18 +1,19 @@
 /**
- * \file MonteCarloSim_alpha.h
- * \date 25-Jul-2017
+ * \file MonteCarloSim_beta.h
+ * \date 5-Aug-2017
  *
- * \brief Update to the class MonteCarloSim.
+ * \brief
+ *
  */
 
-#ifndef MONTECARLO_MONTECARLOSIM_ALPHA_H
-#define MONTECARLO_MONTECARLOSIM_ALPHA_H
+#ifndef MONTECARLO_MONTECARLOSIM_BETA_H
+#define MONTECARLO_MONTECARLOSIM_BETA_H
 
 #include <functional>
 #include <iostream>
 #include <vector>
 #include <random>
-#include <val/montecarlo/Distribution_alpha.h>
+#include <val/montecarlo/Distribution_beta.h>
 
 using DRE = std::default_random_engine;
 
@@ -25,7 +26,7 @@ using DRE = std::default_random_engine;
  * @tparam D - DistributionType (e.g., UniformIntegral, UniformReal)
  */
 
-template <class T, class U, DistributionType D>
+template <class T, class U, template <class> class D>
 class MonteCarloSimulation {
 protected:
     int nr_trials; ///> number of repeated trials run for the simulation
@@ -91,4 +92,4 @@ public:
     }
 };
 
-#endif //MONTECARLO_MONTECARLOSIM_ALPHA_H
+#endif //MONTECARLO_MONTECARLOSIM_BETA_H
