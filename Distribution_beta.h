@@ -16,7 +16,7 @@
 #include <algorithm>
 #include <iostream>
 
-template <class T, template <class> class RANDOM_DIST >
+template <class T, class PARAM, template <class> class RANDOM_DIST >
 class Distribution {
     RANDOM_DIST<T> randomDistribution;
     int nr_events;
@@ -44,7 +44,7 @@ public:
      * @param _nr_events Number of sequential events to generated
      */
     Distribution(
-            T _likelihood,
+            PARAM _likelihood,
             int _nr_events)
 
             : randomDistribution(_likelihood), nr_events(_nr_events) {}
