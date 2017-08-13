@@ -2,7 +2,7 @@
  * \file Distribution_beta.h
  * \date 5-Aug-2017
  *
- * \brief
+ * \brief Distribution class made more compact by template template construct.
  *
  */
 
@@ -33,10 +33,7 @@ public:
             T _max,
             int _nr_events)
 
-            : randomDistribution(_min, _max), nr_events(_nr_events) {
-        //for ( int ix = 0; ix < nr_events; ++ix )
-        //  events.push_back(randomDistribution(dre));
-    }
+            : randomDistribution(_min, _max), nr_events(_nr_events) {}
 
     /**
      * Constructor used for Bernoulli, Poisson, Exponential distributions
@@ -64,7 +61,7 @@ public:
             int _nr_events)
 
             : randomDistribution(_begin_intervals, _end_intervals, _begin_weights),
-            nr_events(_nr_events){}
+            nr_events(_nr_events) {}
 
     /**
      *
