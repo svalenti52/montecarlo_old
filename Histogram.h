@@ -29,14 +29,14 @@ std::ostream& operator <<(std::ostream& o, Bin<T,U>& b);
 
 ///------------------------------------------------------------------------------
 
-template <typename T, typename U>
+template <typename X_AXIS, typename Y_AXIS>
 class Bin
 {
 public:
-    T right_edge_interval; ///> right edge of bin; integer represented if type int
-    T size_interval; ///> bin_width
+    X_AXIS right_edge_interval; ///> right edge of bin; integer represented if type int
+    X_AXIS size_interval; ///> bin_width
 
-    U amount; ///> amount associated with this bin
+    Y_AXIS amount; ///> amount associated with this bin
     
     int index; ///> index associated with this bin, first element is one.
 
@@ -47,7 +47,7 @@ public:
      * @param _right_edge_interval - value of right edge of bin
      * @param _size - bin_width
      */
-    Bin(int _index, T _right_edge_interval, T _size) :
+    Bin(int _index, X_AXIS _right_edge_interval, X_AXIS _size) :
             index(_index),
             right_edge_interval(_right_edge_interval),
             size_interval(_size),
@@ -63,7 +63,7 @@ public:
      * @param v - input value.
      * @return boolean value indicating whether the input value is LEQ to the right edge.
      */
-    bool inc_count_if_less_equal(T v)
+    bool inc_count_if_less_equal(X_AXIS v)
     {
         if ( v <= right_edge_interval )
         {
@@ -73,7 +73,7 @@ public:
         return false;
     }
 
-    bool add_if_less_equal(T v, U _amount)
+    bool add_if_less_equal(X_AXIS v, Y_AXIS _amount)
     {
         if ( v <= right_edge_interval )
         {
@@ -91,11 +91,11 @@ public:
      * add_amount - add amount to the amount of this bin.
      * @param added_amount
      */
-    void add_amount(U added_amount) {
+    void add_amount(Y_AXIS added_amount) {
         amount += added_amount;
     }
 
-    friend std::ostream& operator << <>(std::ostream& o, Bin<T,U>& b);
+    friend std::ostream& operator << <>(std::ostream& o, Bin<X_AXIS,Y_AXIS>& b);
 };
 
 template <typename T, typename U>
@@ -107,11 +107,11 @@ std::ostream& operator <<(std::ostream& o, Bin<T,U>& b)
 
 ///-------------------------------------------------------------------------------------
 
-template <class T, class U>
+template <class X_AXIS, class Y_AXIS>
 class Histogram;
 
-template <class T, class U>
-std::ostream& operator << (std::ostream&, Histogram<T,U>&);
+template <class X_AXIS, class Y_AXIS>
+std::ostream& operator << (std::ostream&, Histogram<X_AXIS,Y_AXIS>&);
 
 /**
  * Histogram class
@@ -205,7 +205,7 @@ public:
         //double bin_width_inverse = 1.0 /static_cast<double>(bin_width);
         int index_bin = static_cast<int>(std::floor(x_axis_value * bin_width_inverse));
         bins[index_bin].inc_count();
-        /*for ( Bin<T,U>& b : bins )
+        /*for ( Bin<X_AXIS,Y_AXIS>& b : bins )
             if ( b.inc_count_if_less_equal(x_axis_value) )
                 break;
         */
@@ -215,7 +215,7 @@ public:
         //double bin_width_inverse = 1.0 /static_cast<double>(bin_width);
         int index_bin = static_cast<int>(std::floor(x_axis_value * bin_width_inverse));
         bins[index_bin].add_amount(_amount);
-        /*for ( Bin<T,U>& b : bins )
+        /*for ( Bin<X_AXIS,Y_AXIS>& b : bins )
             if ( b.add_if_less_equal(x_axis_value, _amount) )
                 break;
         */
@@ -230,10 +230,10 @@ public:
     friend std::ostream& operator << <T,U> (std::ostream& o, Histogram<T,U>& histogram);
 };
 
-template <class T, class U>
-std::ostream& operator << (std::ostream& o, Histogram<T,U>& histogram) {
+template <class X_AXIS, class Y_AXIS>
+std::ostream& operator << (std::ostream& o, Histogram<X_AXIS,Y_AXIS>& histogram) {
     o << "Amount" << '\n';
-    for ( Bin<T,U>& b : histogram.bins )
+    for ( Bin<X_AXIS,Y_AXIS>& b : histogram.bins )
         o << b << '\n';
     return o;
 }

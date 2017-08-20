@@ -16,9 +16,9 @@
 #include <algorithm>
 #include <iostream>
 
-template <class T, class PARAM, template <class> class RANDOM_DIST >
+template <class X_AXIS, class PARAM, template <class> class RANDOM_DIST >
 class Distribution {
-    RANDOM_DIST<T> randomDistribution;
+    RANDOM_DIST<X_AXIS> randomDistribution;
     int nr_events;
 public:
 
@@ -29,8 +29,8 @@ public:
      * @param _nr_events Number of sequential events to generated
      */
     Distribution(
-            T _min,
-            T _max,
+            X_AXIS _min,
+            X_AXIS _max,
             int _nr_events)
 
             : randomDistribution(_min, _max), nr_events(_nr_events) {}
@@ -77,7 +77,7 @@ public:
      * @param dre
      */
     void reload_random_values(std::default_random_engine& dre) {
-        for ( T& value : events )
+        for ( X_AXIS& value : events )
             value = randomDistribution(dre);
     }
 
@@ -85,7 +85,7 @@ public:
      *
      * @param vector_of_values
      */
-    void reload_values (const std::vector<T>& vector_of_values) {
+    void reload_values (const std::vector<X_AXIS>& vector_of_values) {
         for ( int ix = 0; ix < events.size(); ++ix )
             events[ix] = vector_of_values[ix];
     }
@@ -111,9 +111,9 @@ public:
      *
      * @return
      */
-    T sum() {
-        T cumulative = 0;
-        for ( T element : events )
+    X_AXIS sum() {
+        X_AXIS cumulative = 0;
+        for ( X_AXIS element : events )
             cumulative += element;
         return cumulative;
     }
@@ -122,11 +122,11 @@ public:
     * show_contents - show, on cout, the contents of the deque
     */
     void show_contents() {
-        for ( T event : events )
+        for ( X_AXIS event : events )
             std::cout << event << "  ";
     }
 
-    std::deque<T> events;
+    std::deque<X_AXIS> events;
 };
 
 #endif //MONTECARLO_DISTRIBUTION_BETA_H

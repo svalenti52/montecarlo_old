@@ -21,22 +21,22 @@ using DRE = std::default_random_engine;
  * MonteCarloSimulation Class, consists of Constructor and the methods: run, change_message, and
  * print_result. This is a reworking of the original MonteCarloSim class. The main differences are the
  * presence of a random number generator and a template for the y-axis value.
- * @tparam T - For the x-axis or domain of the distribution, expected to be either integral or floating point.
- * @tparam U - For the y-axis or range of the distribution, expected to be either integral or floating point.
- * @tparam P - Input parameter type, e.g, for Poisson it is of real type even though values T are integral
- * @tparam D - A template template of the Distribution - when object created, e.g., std::uniform_int_distribution
+ * @tparam X_AXIS - For the x-axis or domain of the distribution, expected to be either integral or floating point.
+ * @tparam Y_AXIS - For the y-axis or range of the distribution, expected to be either integral or floating point.
+ * @tparam PARAM - Input parameter type, e.g, for Poisson it is of real type even though values T are integral
+ * @tparam STD_DIST - A template template of the Distribution - when object created, e.g., std::uniform_int_distribution
  */
 
-template <class T, class U, class P, template <class> class D>
+template <class X_AXIS, class Y_AXIS, class PARAM, template <class> class STD_DIST>
 class MonteCarloSimulation {
 protected:
     int nr_trials; ///> number of repeated trials run for the simulation
     DRE dre;			///> default random engine
-    U cumulative_value; ///> accumulates the interim value for nr_trials
-    U interim_value;		///> value determined for each trial
+    Y_AXIS cumulative_value; ///> accumulates the interim value for nr_trials
+    Y_AXIS interim_value;		///> value determined for each trial
     std::string message; ///> message can be changed to match the meaning of cumulative_value/nr_trials
-    Distribution<T, P, D> distribution; ///> (e.g., real) and deque of numbers selected from it
-    std::function<bool(Distribution<T, P, D>&, U&, DRE&)> condition_met; ///> function containing particulars of the simulation
+    Distribution<X_AXIS, PARAM, STD_DIST> distribution; ///> (e.g., real) and deque of numbers selected from it
+    std::function<bool(Distribution<X_AXIS, PARAM, STD_DIST>&, Y_AXIS&, DRE&)> condition_met; ///> function containing particulars of the simulation
 
 public:
 
@@ -50,8 +50,8 @@ public:
      * @param _distribution (e.g., real) and deque of numbers selected from it
      */
     MonteCarloSimulation ( int _nr_trials, int _seed,
-            std::function<bool(Distribution<T, P, D>&, U&, DRE&)> _condition_met,
-            Distribution<T, P, D>& _distribution )
+            std::function<bool(Distribution<X_AXIS, PARAM, STD_DIST>&, Y_AXIS&, DRE&)> _condition_met,
+            Distribution<X_AXIS, PARAM, STD_DIST>& _distribution )
             : nr_trials(_nr_trials), dre(_seed),
               cumulative_value(0), interim_value(1),
               message("probability is = "),
