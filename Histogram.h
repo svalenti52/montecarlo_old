@@ -130,6 +130,8 @@ class Histogram {
     std::vector<Bin<T,U>> bins; ///> vector of Bin (size is nr_bins)
 
     U total_amount;         ///> Tracks total_amount contained in the histogram
+    U bin_too_hi;
+    U bin_too_lo;
 public:
     /**
      * Histogram class constructor - note that the extent of the interval is quite nicely represented
@@ -145,7 +147,9 @@ public:
             upper_bound_right_edge(_upper_bound_right_edge),
             bin_width(_bin_width),
             bin_width_inverse(1.0 / static_cast<double>(_bin_width)),
-            total_amount(0)
+            total_amount(0),
+            bin_too_hi(0),
+            bin_too_lo(0)
     {
         nr_bins = static_cast<int>((upper_bound_right_edge - lower_bound_left_edge) / bin_width);
         for ( int ix = 1; ix <= nr_bins; ++ix )
@@ -193,7 +197,7 @@ public:
         U half_way_count = total_amount / 2;
         U running_count = 0;
         int ix = 0;
-        for ( ix; ix < nr_bins; ++ix ) {
+        for ( ; ix < nr_bins; ++ix ) {
             running_count += bins[ix].amount;
             if ( running_count >= half_way_count )
                 break;
@@ -202,23 +206,36 @@ public:
     }
 
     void increment_if_in_range(T x_axis_value) {
-        //double bin_width_inverse = 1.0 /static_cast<double>(bin_width);
-        int index_bin = static_cast<int>(std::floor(x_axis_value * bin_width_inverse));
-        bins[index_bin].inc_count();
-        /*for ( Bin<X_AXIS,Y_AXIS>& b : bins )
-            if ( b.inc_count_if_less_equal(x_axis_value) )
-                break;
-        */
+        if (x_axis_value < lower_bound_left_edge)
+        {
+            bin_too_lo += 1;
+        }
+        else if (x_axis_value > upper_bound_right_edge)
+        {
+            bin_too_hi += 1;
+        }
+        else
+        {
+            uint32_t index_bin = static_cast<int>(std::floor(x_axis_value * bin_width_inverse));
+            if (index_bin < nr_bins)
+                bins[index_bin].inc_count();
+        }
     }
 
     void add_if_in_range(T x_axis_value, U _amount) {
-        //double bin_width_inverse = 1.0 /static_cast<double>(bin_width);
-        int index_bin = static_cast<int>(std::floor(x_axis_value * bin_width_inverse));
-        bins[index_bin].add_amount(_amount);
-        /*for ( Bin<X_AXIS,Y_AXIS>& b : bins )
-            if ( b.add_if_less_equal(x_axis_value, _amount) )
-                break;
-        */
+        if (x_axis_value < lower_bound_left_edge)
+        {
+            bin_too_lo += _amount;
+        }
+        else if (x_axis_value > upper_bound_right_edge)
+        {
+            bin_too_hi += _amount;
+        }
+        else
+        {
+            int index_bin = static_cast<int>(std::floor(x_axis_value * bin_width_inverse));
+            bins[index_bin].add_amount(_amount);
+        }
     }
 
     /**
@@ -235,6 +252,8 @@ std::ostream& operator << (std::ostream& o, Histogram<X_AXIS,Y_AXIS>& histogram)
     o << "Amount" << '\n';
     for ( Bin<X_AXIS,Y_AXIS>& b : histogram.bins )
         o << b << '\n';
+    o << "\nToo Low = " << histogram.bin_too_lo << '\n';
+    o << "Too High = " << histogram.bin_too_hi << '\n';
     return o;
 }
 
@@ -262,7 +281,7 @@ public:
         int half_way_count = total_count / 2;
         int running_count = 0;
         int ix = 0;
-        for ( ix; ix < upper_bound; ++ix ) {
+        for ( ; ix < upper_bound; ++ix ) {
             running_count += histogram[ix];
             if ( running_count >= half_way_count )
                 break;
