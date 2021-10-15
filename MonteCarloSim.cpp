@@ -12,6 +12,7 @@
 #include <val/montecarlo/Histogram.h>
 #include <val/montecarlo/StateMatrix.h>
 #include <val/montecarlo/List_Without_Repetition.h>
+#include <val/montecarlo/Combinatorics.h>
 
 int main() {
 
