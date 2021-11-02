@@ -7,6 +7,8 @@
 
 #include <vector>
 #include <functional>
+#include <cmath>
+#include <string>
 
 /**
  * permutations_with_repetition
@@ -117,6 +119,67 @@ void create_combinatorial_element_set(std::vector<T>& symbols,
                 permutation_set.push_back(permutation);
         }
     }
+}
+
+class primes_list
+{
+    std::vector<bool> prime_list;
+public:
+    explicit primes_list(uint64_t upper_bound)
+    {
+        auto sqrt_ub = static_cast<uint64_t>(std::ceil(std::sqrt(upper_bound)));
+        for (int ix = 0; ix < upper_bound; ++ix)
+            prime_list.push_back(true);
+        prime_list[0] = false;
+        prime_list[1] = false;
+        for (int ix = 2; ix < sqrt_ub; ++ix) {
+            if (prime_list[ix])
+                for (int jx = ix + ix; jx < upper_bound; jx += ix)
+                    prime_list[jx] = false;
+
+        }
+    }
+
+    bool is_prime(uint64_t number) {
+        return prime_list[number];
+    }
+};
+
+bool is_numeric_palindrome(uint64_t number)
+{
+    std::string s = std::to_string(number);
+    std::string::const_reverse_iterator ri = s.crbegin();
+    for (char digit : s)
+    {
+        if (digit != *ri++)
+            return false;
+    }
+    return true;
+}
+
+uint64_t numeric_digits_reversed(uint64_t number)
+{
+    // special to emirps
+    std::string s = std::to_string(number);
+    if (s[0] == '2' || s[0] == '4' || s[0] == '5' || s[0] == '6' || s[0] == '8')
+        return 4;
+    std::string::reverse_iterator ri = s.rbegin();
+    std::string reverse_digits_string{""};
+    for (ri; ri != s.rend(); ++ri)
+        reverse_digits_string.push_back(*ri);
+    return stoull(reverse_digits_string, nullptr, 10);
+}
+
+uint64_t reverse(uint64_t k)
+{
+    uint64_t reverse=0;
+
+    while(k!=0)
+    {
+        reverse=(reverse*10)+(k%10);
+        k=k/10;
+    }
+    return reverse;
 }
 
 #endif //MONTECARLO_COMBINATORICS_H
