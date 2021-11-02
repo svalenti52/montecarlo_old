@@ -157,29 +157,28 @@ bool is_numeric_palindrome(uint64_t number)
     return true;
 }
 
-uint64_t numeric_digits_reversed(uint64_t number)
+/*uint64_t numeric_digits_reversed(uint64_t number)
 {
     // special to emirps
     std::string s = std::to_string(number);
-    if (s[0] == '2' || s[0] == '4' || s[0] == '5' || s[0] == '6' || s[0] == '8')
-        return 4;
     std::string::reverse_iterator ri = s.rbegin();
     std::string reverse_digits_string{""};
     for (ri; ri != s.rend(); ++ri)
         reverse_digits_string.push_back(*ri);
     return stoull(reverse_digits_string, nullptr, 10);
-}
+}*/
 
-uint64_t reverse(uint64_t k)
+uint64_t numeric_digits_reversed(uint64_t number)
 {
-    uint64_t reverse=0;
+    uint64_t reversed = 0;
 
-    while(k!=0)
+    while(number != 0)
     {
-        reverse=(reverse*10)+(k%10);
-        k=k/10;
+        reversed = (reversed * 10) + (number % 10);
+        number = number / 10;
+
     }
-    return reverse;
+    return reversed;
 }
 
 #endif //MONTECARLO_COMBINATORICS_H
