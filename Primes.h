@@ -39,7 +39,6 @@ public:
     explicit Primes(Primes_List primesList, uint64_t upper_bound)
     {
         uint64_t ix = 0;
-        // uint64_t prime_ix = 0;
         while (ix < upper_bound)
         {
             if (primesList.is_prime(ix))
@@ -48,6 +47,11 @@ public:
             }
             ++ix;
         }
+    }
+
+    std::vector<uint64_t>::iterator get_pos(uint64_t index)
+    {
+        return primes.begin() + index;
     }
 
     uint64_t get_ith_prime(uint64_t index)
