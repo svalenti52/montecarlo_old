@@ -55,10 +55,17 @@ public:
         return primes[index];
     }
 
-    void list_primes()
+    void list_primes(uint64_t ub = 0)
     {
-        for (uint64_t d : primes)
-            std::cout << d << ", ";
+        if (ub == 0) {
+            for (uint64_t d: primes)
+                std::cout << d << ", ";
+        }
+        else {
+            for (int ix = 0; ix < ub; ++ix)
+                std::cout << ix+1 << ". " << primes[ix] << ", ";
+        }
+
         std::cout << '\n';
         std::cout << "Primes size = " << primes.size() << '\n';
     }
