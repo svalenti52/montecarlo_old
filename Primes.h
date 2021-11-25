@@ -119,6 +119,8 @@ public:
 bool is_numeric_palindrome(uint64_t number)
 {
     std::string s = std::to_string(number);
+    return std::equal(s.begin(), s.begin() + s.size()/2, s.rbegin());
+/*
     std::string::const_reverse_iterator ri = s.crbegin();
     for (char digit : s)
     {
@@ -126,6 +128,7 @@ bool is_numeric_palindrome(uint64_t number)
             return false;
     }
     return true;
+*/
 }
 
 /*uint64_t numeric_digits_reversed(uint64_t number)
