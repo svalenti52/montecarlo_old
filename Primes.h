@@ -91,7 +91,7 @@ public:
         while (prime_count < number_primes_to_sieve) {
             if (prime_list[prime_index]) {
                 ++prime_count;
-                for (uint64_t ix = prime_index + prime_index; ix <= upper_bound; ix += prime_index)
+                for (uint64_t ix = prime_index * prime_index; ix <= upper_bound; ix += prime_index)
                     prime_list[ix] = false;
             }
             ++prime_index;
@@ -120,27 +120,7 @@ bool is_numeric_palindrome(uint64_t number)
 {
     std::string s = std::to_string(number);
     return std::equal(s.begin(), s.begin() + s.size()/2, s.rbegin());
-/*
-    std::string::const_reverse_iterator ri = s.crbegin();
-    for (char digit : s)
-    {
-        if (digit != *ri++)
-            return false;
-    }
-    return true;
-*/
 }
-
-/*uint64_t numeric_digits_reversed(uint64_t number)
-{
-    // special to emirps
-    std::string s = std::to_string(number);
-    std::string::reverse_iterator ri = s.rbegin();
-    std::string reverse_digits_string{""};
-    for (ri; ri != s.rend(); ++ri)
-        reverse_digits_string.push_back(*ri);
-    return stoull(reverse_digits_string, nullptr, 10);
-}*/
 
 uint64_t numeric_digits_reversed(uint64_t number)
 {
