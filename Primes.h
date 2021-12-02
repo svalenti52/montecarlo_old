@@ -7,6 +7,8 @@
 
 #include <vector>
 #include <cmath>
+#include <string>
+#include <iostream>
 
 class Primes_List
 {
