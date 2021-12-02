@@ -23,6 +23,14 @@ class Distribution {
 public:
 
     /**
+     * Main purpose of Distribution is to provide an "actuation" container
+     * for the underlying distribution.
+     * This is where the actual 'EVENTS' (in lower case below) are stored and
+     * reloaded by the Monte Carlo engine.
+     */
+    std::deque<X_AXIS> events;
+
+    /**
      * Constructor used for uniform integer and real distributions, also the
      * normal distribution uses it with mean and standard deviation.
      * @param _min Minimum value to be used by the random number distribution
@@ -131,10 +139,7 @@ public:
      * @return
      */
     X_AXIS sum() {
-        X_AXIS cumulative = 0;
-        for ( X_AXIS element : events )
-            cumulative += element;
-        return cumulative;
+        return std::accumulate(events.begin(), events.end(), 0);
     }
 
     /**
@@ -144,15 +149,15 @@ public:
         for ( X_AXIS event : events )
             std::cout << event << "  ";
     }
-
-    std::deque<X_AXIS> events;
 };
 
 template <class X_AXIS, class PARAM, class RANDOM_DIST >
-class Distribution_NTT {
+class Distribution_NTT {  // NTT -> non-template-template
     RANDOM_DIST randomDistribution;
     int nr_events;
 public:
+
+    std::deque<X_AXIS> events;
 
     /**
      * Constructor used for uniform integer and real distributions, also the
@@ -263,10 +268,7 @@ public:
      * @return
      */
     X_AXIS sum() {
-        X_AXIS cumulative = 0;
-        for ( X_AXIS element : events )
-            cumulative += element;
-        return cumulative;
+        return std::accumulate(events.begin(), events.end(), 0);
     }
 
     /**
@@ -276,8 +278,6 @@ public:
         for ( X_AXIS event : events )
             std::cout << event << "  ";
     }
-
-    std::deque<X_AXIS> events;
 };
 
 #endif //MONTECARLO_DISTRIBUTION_BETA_H
