@@ -118,15 +118,17 @@ public:
     }
 };
 
-bool is_numeric_palindrome(uint64_t number)
+template <typename T>
+bool is_numeric_palindrome(T number)
 {
     std::string s = std::to_string(number);
     return std::equal(s.begin(), s.begin() + s.size()/2, s.rbegin());
 }
 
-uint64_t numeric_digits_reversed(uint64_t number)
+template <typename T>
+T numeric_digits_reversed(T number)
 {
-    uint64_t reversed = 0;
+    T reversed = 0;
 
     while(number != 0)
     {
@@ -135,6 +137,18 @@ uint64_t numeric_digits_reversed(uint64_t number)
 
     }
     return reversed;
+}
+
+template <typename T>
+void digits_from_number(T number, std::vector<T>& digits)
+{
+    T rev_number = numeric_digits_reversed(number);
+    while (rev_number != 0)
+    {
+        T digit = rev_number % 10;
+        digits.push_back(digit);
+        rev_number /= 10;
+    }
 }
 
 #endif //MONTECARLO_PRIMES_H
