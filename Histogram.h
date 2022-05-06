@@ -216,7 +216,7 @@ public:
         }
         else
         {
-            uint32_t index_bin = static_cast<int>(std::floor((x_axis_value - lower_bound_left_edge) * bin_width_inverse));
+            int index_bin = static_cast<int>(std::floor((x_axis_value - lower_bound_left_edge) * bin_width_inverse));
             if (index_bin < nr_bins)
                 bins[index_bin].inc_count();
         }
@@ -233,7 +233,7 @@ public:
         }
         else
         {
-            int index_bin = static_cast<int>(std::floor(x_axis_value * bin_width_inverse));
+            int index_bin = static_cast<int>(std::floor((x_axis_value - lower_bound_left_edge) * bin_width_inverse));
             bins[index_bin].add_amount(_amount);
         }
     }
