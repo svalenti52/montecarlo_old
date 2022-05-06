@@ -84,6 +84,11 @@ public:
                                   static_cast<double>(nr_trials) << '\n';
     }
 
+    virtual double return_result() {
+        return
+                static_cast<double>(cumulative_value) / static_cast<double>(nr_trials);
+    }
+
     /**
      * show_distribution - shows the contents of the distribution
      */
@@ -158,6 +163,11 @@ public:
                   << static_cast<double>(cumulative_value)
                      /
                      static_cast<double>(nr_trials) << '\n';
+    }
+
+    virtual double return_result() {
+        return
+            static_cast<double>(cumulative_value) / static_cast<double>(nr_trials);
     }
 
     /**
