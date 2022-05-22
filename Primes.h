@@ -126,6 +126,22 @@ bool is_numeric_palindrome(T number)
 }
 
 template <typename T>
+bool is_numeric_calc_palindrome(T number)
+{
+    T straight = number;
+    T reversed = 0;
+
+    while(number != 0)
+    {
+        reversed = (reversed * 10) + (number % 10);
+        number = number / 10;
+    }
+    if (straight == reversed)
+        return true;
+    return false;
+}
+
+template <typename T>
 T numeric_digits_reversed(T number)
 {
     T reversed = 0;

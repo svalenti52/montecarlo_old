@@ -238,6 +238,9 @@ public:
         }
     }
 
+    int size() {return nr_bins;}
+    U get_amount(int ix) {return bins[ix].amount;}
+
     /**
      * output stream operator, standard output of histogram. Currently, outputs in format
      * for Python (also many others I am reasonably sure) to read for graphing.
